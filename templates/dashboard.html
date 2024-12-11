@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>To-Do Dashboard</title>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>ToDo App</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="#" class="nav-item">Meine ToDos</a>
+                <a href="#" class="nav-item">Noten Tracker</a>
+                <a href="#" class="nav-item">Archiv</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="/logout" class="logout-button">Logout</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-menu">
+                <h1>Hallo, {{ current_user.username }}</h1>
+                <div class="menu-buttons">
+                    <button id="add-todo-button" class="add-todo-button">ToDo hinzufügen</button>
+                    <button id="add-subject-button" class="add-subject-button">Fach hinzufügen</button>
+                    <button id="add-grade-button" class="add-grade-button">Note hinzufügen</button>
+                </div>
+            </div>
+
+            <div class="todo-list">
+                {% for todo in todos %}
+                <div class="todo-card">
+                    <h2>{{ todo.title }}</h2>
+                    <p>{{ todo.description or 'Keine Beschreibung' }}</p>
+                    <small>Erstellt am: {{ todo.created_at.strftime('%d.%m.%Y %H:%M') }}</small>
+                    <div class="actions">
+                        <a href="/edit/{{ todo.id }}">Bearbeiten</a>
+                        <a href="/delete/{{ todo.id }}">Löschen</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Modal -->
+    <div id="subject-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Fach hinzufügen</h2>
+            <form id="subject-form" method="POST" action="{{ url_for('add_subject') }}">
+                <input type="text" name="name" placeholder="Fachname" required>
+                <label for="is_abitur">Abiturfach</label>
+                <input type="checkbox" id="is_abitur" name="is_abitur">
+                <button type="submit" class="submit-button">Fach hinzufügen</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Grade Modal -->
+    <div id="grade-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Note hinzufügen</h2>
+            <form id="grade-form" method="POST" action="{{ url_for('add_grade') }}">
+                <label for="subject">Fach</label>
+                <select name="subject" id="subject" required>
+                    <option value="">Fach auswählen</option>
+                    {% for subject in subjects %}
+                    <option value="{{ subject.name }}">{{ subject.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="semester">Semester</label>
+                <select name="semester" id="semester" required>
+                    <option value="">Semester auswählen</option>
+                    <option value="1">11.1</option>
+                    <option value="2">11.2</option>
+                    <option value="3">12.1</option>
+                    <option value="4">12.2</option>
+                    <option value="5">Abitur</option> <!-- Fifth option for Abitur -->
+                </select>
+
+                <label for="points">Punkte (0-15)</label>
+                <input type="number" id="points" name="points" min="0" max="15" required>
+
+                <button type="submit" class="submit-button">Note hinzufügen</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

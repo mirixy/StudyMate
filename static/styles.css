@@ -1,0 +1,699 @@
+/* Allgemeines Styling */
+:root {
+    --primary-purple: #9b6dff;
+    --primary-hover: #8557f7;
+    --dark-bg: #1e1926;
+    --sidebar-bg: #2a2433;
+    --card-bg: #332b3d;
+    --text-primary: #ffffff;
+    --text-secondary: #e0d5ff;
+    --text-muted: #b4a5d6;
+    --border-color: #3d3447;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: block;
+    justify-content: initial;
+    align-items: initial;
+    font-family: Arial, sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+}
+
+.container {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Überschrift */
+h1 {
+    text-align: center;
+    color: #ffffff;
+}
+
+/* Formular */
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.todo-form input, .todo-form textarea, .todo-form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.todo-form input, .todo-form textarea {
+    background-color: #3a3a3a;
+    color: #f4f4f4;
+}
+
+.todo-form button {
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.todo-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Karten */
+.todo-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0;
+    width: 100%;
+}
+
+.todo-card {
+    background-color: var(--card-bg);
+    margin-bottom: 0;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color);
+}
+
+.todo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.5);
+}
+
+.todo-card h2 {
+    margin: 0 0 10px;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.todo-card p {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.todo-card small {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Aktionen */
+.actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions a {
+    text-decoration: none;
+    color: var(--primary-purple);
+    font-weight: bold;
+}
+
+.actions a:hover {
+    color: var(--primary-hover);
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Einheitliches Styling für alle Modal-Felder */
+.modal-content input[type="text"],
+.modal-content input[type="email"],
+.modal-content input[type="password"],
+.modal-content textarea {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+/* Konsistentes Button-Styling */
+.modal-content .submit-button {
+    background-color: var(--primary-purple);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.modal-content .submit-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Layout der Labels und Inputs */
+.modal-content label {
+    display: block;
+    margin: 10px auto 5px;
+    font-size: 14px;
+    text-align: left;
+    width: 90%;
+    color: #ddd;
+}
+
+
+/* Hinzufügen-Button */
+.add-todo-button {
+    background-color: var(--primary-purple);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-todo-button:hover {
+    background-color: var(--primary-hover);
+}
+
+
+/* Registration */
+#register-modal .submit-button {
+    background-color: #007bff; /* Blau für Registrieren */
+}
+
+#register-modal .submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Hintergrund der Login-Seite */
+body {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container für die Login-Karte */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Styling der Login-Karte */
+.login-card {
+    background-color: #2c2c2c;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Überschrift */
+.login-card h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Eingabefelder */
+.login-card input[type="email"],
+.login-card input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #222;
+    color: #fff;
+}
+
+/* Login-Button */
+.login-card .submit-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.login-card .submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+.login-footer {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.login-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.top-menu {
+    background-color: var(--sidebar-bg);
+    padding: 1rem 2rem;
+    border-radius: 0;
+    margin: 0 0 2rem 0;
+    width: calc(100% - 4rem);
+}
+
+.menu-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #333;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.sidebar-nav {
+    padding: 1rem 0;
+    flex-grow: 1;
+}
+
+.nav-item {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+.sidebar-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #333;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    width: 100%;
+    background-color: var(--dark-bg);
+}
+
+/* Logout button styling */
+.logout-button {
+    display: block;
+    color: #f4f4f4;
+    text-decoration: none;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.logout-button:hover {
+    opacity: 1;
+}
+
+/* Add/update responsive styles */
+@media screen and (max-width: 1024px) {
+    .todo-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-nav {
+        display: flex;
+        padding: 0.5rem;
+        overflow-x: auto;
+    }
+
+    .nav-item {
+        padding: 0.5rem 1rem;
+        white-space: nowrap;
+    }
+
+    .sidebar-header {
+        padding: 1rem;
+    }
+
+    .sidebar-footer {
+        display: none; /* Hide footer on mobile */
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .top-menu {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+        padding: 1rem;
+        width: calc(100% - 2rem);
+    }
+
+    .top-menu h1 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    .menu-buttons {
+        width: 100%;
+    }
+
+    .add-todo-button {
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 5vh auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .todo-list {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 90%;
+        margin: 20% auto;
+    }
+
+    .todo-card {
+        margin-bottom: 1rem;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+
+    .actions a {
+        text-align: center;
+        padding: 0.5rem;
+        background-color: var(--card-bg);
+        border-radius: 5px;
+    }
+}
+
+/* Add smooth transitions for responsive changes */
+.dashboard-container,
+.sidebar,
+.main-content,
+.top-menu,
+.todo-list,
+.todo-card {
+    transition: all 0.3s ease;
+}
+
+/* Ensure modal is responsive */
+.modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Make inputs more touch-friendly on mobile */
+@media (hover: none) and (pointer: coarse) {
+    .nav-item,
+    .add-todo-button,
+    .actions a,
+    input,
+    textarea,
+    button {
+        min-height: 44px; /* Minimum touch target size */
+    }
+
+    .modal-content input[type="text"],
+    .modal-content input[type="email"],
+    .modal-content input[type="password"],
+    .modal-content textarea {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
+
+/* Grade Tracker Styles */
+.grades-section {
+    width: 100%;
+}
+
+.grades-overview {
+    padding: 1rem;
+}
+
+.grade-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.stat-card h3 {
+    color: var(--text-secondary);
+    margin: 0 0 0.5rem 0;
+}
+
+.stat-card p {
+    font-size: 2rem;
+    margin: 0;
+    color: var(--primary-purple);
+}
+
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.subject-card {
+    background-color: var(--card-bg);
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.subject-card h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+}
+
+.grade-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.grade-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.grade-item:last-child {
+    border-bottom: none;
+}
+
+.grade-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.points-badge {
+    background-color: var(--primary-purple);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Form Styles */
+.modal-content select {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 16px;
+    display: block;
+}
+
+.modal-content select option {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+}
+
+@media screen and (max-width: 768px) {
+    .grade-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .subjects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Register page styles */
+.register-container {
+    display: block;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.register-content {
+    background-color: var(--sidebar-bg);
+    color: #fff;
+    margin: 5vh auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Inherit modal styles for inputs and buttons */
+.register-content input[type="text"],
+.register-content input[type="email"],
+.register-content input[type="password"],
+.register-content textarea {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.register-content .submit-button {
+    background-color: var(--primary-purple);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    width: 90%;
+}
+
+.register-content .submit-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.register-content label {
+    display: block;
+    margin: 10px auto 5px;
+    font-size: 14px;
+    text-align: left;
+    width: 90%;
+    color: #ddd;
+}
+
