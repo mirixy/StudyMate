@@ -1,0 +1,319 @@
+/* General Styling */
+:root {
+    --primary-purple: #9b6dff; /* Main purple color */
+    --primary-hover: #8557f7; /* Darker purple for hover effects */
+    --dark-bg: #1e1926; /* Dark background */
+    --sidebar-bg: #2a2433; /* Sidebar background */
+    --card-bg: #332b3d; /* Card background */
+    --text-primary: #ffffff; /* Primary text color */
+    --text-secondary: #e0d5ff; /* Secondary text color */
+    --text-muted: #b4a5d6; /* Muted text color */
+    --border-color: #3d3447; /* Border color */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex; /* Use flexbox for layout */
+    background-color: var(--dark-bg); /* Dark background for the body */
+}
+
+.sidebar {
+    width: 250px; /* Fixed width for sidebar */
+    background-color: var(--sidebar-bg);
+    color: var(--text-primary);
+    padding: 20px;
+    position: fixed; /* Fix the sidebar */
+    height: 100%; /* Full height */
+    overflow-y: auto; /* Scroll if content overflows */
+}
+
+.main-content {
+    margin-left: 250px; /* Leave space for the sidebar */
+    padding: 20px;
+    width: calc(100% - 250px); /* Adjust width */
+    overflow-y: auto; /* Allow scrolling */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Stack content vertically */
+}
+
+.navbar {
+    display: none; /* Hide the top navbar */
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item {
+    padding: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+    background-color: var(--primary-purple); /* Button background */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text */
+    margin-bottom: 10px; /* Space between buttons */
+    transition: background-color 0.3s ease; /* Transition effect */
+}
+
+.nav-item:hover {
+    background-color: var(--primary-hover); /* Change color on hover */
+}
+
+.subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.subject-card {
+    background-color: var(--card-bg);
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-card {
+    background-color: var(--card-bg);
+    padding: 20px; /* Adjust padding to match login card */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: 10px auto; /* Center the card */
+    width: 90%; /* Set a fixed width for the card */
+}
+
+.todo-card h5 {
+    margin: 0 0 10px;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.todo-card p {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Headings */
+h1 {
+    text-align: center;
+    color: var(--text-primary);
+}
+
+/* Forms */
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.todo-form input, .todo-form textarea, .todo-form button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.todo-form input, .todo-form textarea {
+    background-color: #3a3a3a; /* Dark input fields */
+    color: var(--text-primary);
+}
+
+.todo-form button {
+    background-color: var(--primary-purple);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.todo-form button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Cards */
+.todo-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0;
+    width: 100%;
+}
+
+.todo-card {
+    background-color: var(--card-bg);
+    margin-bottom: 0;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color);
+}
+
+.todo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.5);
+}
+
+.todo-card h2 {
+    margin: 0 0 10px;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.todo-card p {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Register Content */
+.register-content {
+    background-color: var(--sidebar-bg);
+    color: var(--text-primary);
+    margin: 5vh auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 40%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+/* Inherit modal styles for inputs and buttons */
+.register-content input[type="text"],
+.register-content input[type="email"],
+.register-content input[type="password"],
+.register-content textarea {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.register-content .submit-button {
+    background-color: var(--primary-purple);
+    color: var(--text-primary);
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    width: 90%;
+}
+
+.register-content .submit-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.register-content label {
+    display: block;
+    margin: 10px auto 5px;
+    font-size: 14px;
+    text-align: left;
+    width: 90%;
+    color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute; /* Change to absolute for smaller screens */
+        width: 100%; /* Full width */
+        height: auto; /* Auto height */
+        display: none; /* Hide by default */
+    }
+
+    .sidebar.active {
+        display: block; /* Show when active */
+    }
+
+    .main-content {
+        margin-left: 0; /* No margin on smaller screens */
+        width: 100%; /* Full width */
+    }
+}
+
+/* Login Card */
+.login-card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px; /* Set a fixed width for the card */
+    margin: 50px auto; /* Center the card */
+}
+
+.login-card h1 {
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.login-card input {
+    width: 100%; /* Full width for inputs */
+    height: 2rem;
+    margin: 10px 0; /* Space between inputs */
+    background-color: var(--sidebar-bg);
+    color: var(--text-muted);
+}
+
+.login-card button {
+    width: 100%;
+    height: 2rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    background-color: var(--primary-purple); /* Button background */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text */
+}
+
+.app-name {
+    color: var(--text-primary);
+    text-align: center; /* Center the app name */
+    margin-bottom: 20px; /* Space below the app name */
+    font-size: 1.5rem; /* Adjust font size as needed */
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block; /* Make it behave like a button */
+    padding: 10px 20px; /* Add padding for size */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text */
+    cursor: pointer; /* Change cursor to pointer */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.btn-primary {
+    background-color: var(--primary-purple); /* Use your primary color */
+    color: var(--text-primary); /* Text color */
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover); /* Change color on hover */
+}

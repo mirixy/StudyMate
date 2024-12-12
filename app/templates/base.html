@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h2 class="app-name">StudyMate</h2>
+        <div class="sidebar-nav">
+            <a class="nav-item" href="/">Home</a>
+            {% if current_user.is_authenticated %}
+            <a class="nav-item" href="/todos">ToDo List</a>
+            <a class="nav-item" href="/grades">Grade Tracker</a>
+            <a class="nav-item" href="/logout">Logout</a>
+            {% else %}
+            <a class="nav-item" href="/login">Login</a>
+            <a class="nav-item" href="/register">Register</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="content">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</body>
+</html>
