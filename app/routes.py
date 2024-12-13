@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from app.models import ToDo, User, Grade
 from app.forms import ToDoForm
+from flask_wtf.csrf import generate_csrf
 
 main = Blueprint("main", __name__)
 
@@ -117,22 +118,35 @@ def add_todo():
 @login_required
 def grades():
     if request.method == 'POST':
-        subject = request.form.get('subject')
-        points = int(request.form.get('points'))
-        new_grade = Grade(subject=subject, points=points, user_id=current_user.id)
-        db.session.add(new_grade)
-        db.session.commit()
-        flash('Grade added successfully!', 'success')
+        if 'subject' in request.form and 'q1' in request.form:
+            subject = request.form.get('subject')
+            q1 = int(request.form.get('q1'))
+            q2 = int(request.form.get('q2'))
+            q3 = int(request.form.get('q3'))
+            q4 = int(request.form.get('q4'))
+            is_lk = 'is_lk' in request.form  # Check if the checkbox was selected
 
-    # Calculate total points for each subject for the current user
+            new_grade = Grade(subject=subject, q1=q1, q2=q2, q3=q3, q4=q4, is_lk=is_lk, user_id=current_user.id)
+            db.session.add(new_grade)
+            db.session.commit()
+            flash('Grades added successfully!', 'success')
+
     grades = Grade.query.filter_by(user_id=current_user.id).all()
-    total_points = {}
-    for grade in grades:
-        if grade.subject not in total_points:
-            total_points[grade.subject] = 0
-        total_points[grade.subject] += grade.points
 
-    return render_template('grades.html', total_points=total_points, grades=grades)
+    # Per-subject points
+    subject_points = {}
+    total_points = 0
+
+    for grade in grades:
+        subject_total = grade.calculate_total_points()
+        total_points += subject_total
+
+        if grade.subject not in subject_points:
+            subject_points[grade.subject] = 0
+        subject_points[grade.subject] += subject_total
+
+    csrf_token = generate_csrf()
+    return render_template('grades.html', grades=grades, total_points=total_points, subject_points=subject_points, csrf_token=csrf_token)
 
 @main.route('/todos/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit_todo(task_id):
@@ -155,3 +169,58 @@ def delete_todo(task_id):
     flash('Task deleted successfully!', 'success')
     return redirect(url_for('main.todos'))
 
+@main.route('/grades/add_subject', methods=['POST'])
+@login_required
+def add_subject():
+    subject = request.form.get('subject')
+    if subject:
+        # Check if the subject already exists
+        if not Grade.query.filter_by(subject=subject, user_id=current_user.id).first():
+            new_subject = Grade(subject=subject, user_id=current_user.id)
+            db.session.add(new_subject)
+            db.session.commit()
+            flash('Subject added successfully!', 'success')
+        else:
+            flash('Subject already exists!', 'warning')
+    return redirect(url_for('main.grades'))
+
+@main.route('/grades/add', methods=['POST'])
+@login_required
+def add_grade():
+    subject = request.form.get('subject')
+    q1 = int(request.form.get('q1'))
+    q2 = int(request.form.get('q2'))
+    q3 = int(request.form.get('q3'))
+    q4 = int(request.form.get('q4'))
+    
+    # Check if the checkbox was selected
+    is_lk = 'is_lk' in request.form  # This will be True if checked, False otherwise
+
+    # Check if the subject already exists
+    existing_grade = Grade.query.filter_by(subject=subject, user_id=current_user.id).first()
+    
+    if existing_grade:
+        # Update existing grades
+        existing_grade.q1 = q1
+        existing_grade.q2 = q2
+        existing_grade.q3 = q3
+        existing_grade.q4 = q4
+        existing_grade.is_lk = is_lk  # Update the is_lk status
+        flash('Grades updated successfully!', 'success')
+    else:
+        # Create a new grade entry
+        new_grade = Grade(subject=subject, q1=q1, q2=q2, q3=q3, q4=q4, is_lk=is_lk, user_id=current_user.id)
+        db.session.add(new_grade)
+        flash('Grades added successfully!', 'success')
+
+    db.session.commit()
+    return redirect(url_for('main.grades'))
+
+@main.route('/grades/delete/<int:subject_id>', methods=['POST'])
+@login_required
+def delete_subject(subject_id):
+    subject = Grade.query.get_or_404(subject_id)
+    db.session.delete(subject)
+    db.session.commit()
+    flash('Subject deleted successfully!', 'success')
+    return '', 204  # No content response

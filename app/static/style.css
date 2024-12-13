@@ -20,7 +20,7 @@ body {
 }
 
 .sidebar {
-    width: 250px; /* Fixed width for sidebar */
+    width: 20%; /* Fixed width for sidebar */
     background-color: var(--sidebar-bg);
     color: var(--text-primary);
     padding: 20px; /* Padding for consistent spacing */
@@ -30,9 +30,9 @@ body {
 }
 
 .main-content {
-    margin-left: 250px; /* Leave space for the sidebar */
+    margin-left: 15%; /* Leave space for the sidebar */
     padding: 20px;
-    width: calc(100% - 250px); /* Adjust width */
+    width: calc(100% - 20%); /* Adjust width */
     overflow-y: auto; /* Allow scrolling */
     display: flex; /* Use flexbox for centering */
     justify-content: center; /* Center horizontally */
@@ -403,8 +403,8 @@ h1 {
     flex: 1; /* Make buttons take equal space */
     margin: 0 5px; /* Add some margin between buttons */
 }
-
-small {
+/* small-text adjustments */
+small { 
     color: var(--text-muted);
 }
 .description {
@@ -429,4 +429,82 @@ small {
 .app-name {
     color: var(--text-primary);
     font-size: 1.5rem; /* Adjust font size as needed */
+}
+
+.overview {
+    background-color: var(--dark-bg);
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.grades{
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between; /* Distribute space between items */
+    gap: 1rem; /* Space between items */
+}
+
+.subject-button {
+    flex: 1 1 calc(25% - 1rem); /* Allow each button to take up to 25% of the row, minus gap */
+    min-width: 200px; /* Minimum width for each button */
+    padding: 15px; /* Adjust padding for a rectangular look */
+    font-size: 16px; /* Font size for better readability */
+    border-radius: 5px; /* Slightly rounded corners */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.subject-button:hover {
+    background-color: var(--primary-hover); /* Change color on hover */
+}
+
+p {
+    color: var(--text-muted);
+    font-size: 1.5em;
+}
+
+table {
+    color: var(--text-secondary);
+}
+
+.greeter {
+    width: calc(100% -20%);
+}
+
+.greeter p {
+    font-size: 1.5em;
+    justify-content: left;
 }

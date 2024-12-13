@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, DateField
+from wtforms import StringField, TextAreaField, SubmitField, DateField, IntegerField
 from wtforms.validators import DataRequired, Length
 
 class ToDoForm(FlaskForm):
@@ -7,3 +7,12 @@ class ToDoForm(FlaskForm):
     description = TextAreaField('Description', validators=[Length(max=500)])
     deadline = DateField('Deadline', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Save')
+
+
+class GradeForm(FlaskForm):
+    subject = StringField('Subject', validators=[DataRequired()])
+    q1 = IntegerField('Q1', validators=[DataRequired()])
+    q2 = IntegerField('Q2', validators=[DataRequired()])
+    q3 = IntegerField('Q3', validators=[DataRequired()])
+    q4 = IntegerField('Q4', validators=[DataRequired()])
+    submit = SubmitField('Add Grade')

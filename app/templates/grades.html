@@ -1,42 +1,178 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Grade Tracker</h1>
+<div class="main-content">
+<h1>Deine Noten</h1>
 
-<form method="POST">
-    <div class="form-group">
-        <label for="subject">Subject:</label>
-        <input type="text" name="subject" id="subject" required>
-    </div>
-    <div class="form-group">
-        <label for="points">Points:</label>
-        <input type="number" name="points" id="points" required>
-    </div>
-    <button type="submit" class="btn btn-success">Add Grade</button>
-</form>
+<h1>Fächer</h1>
+<div class="subjects-grid grades">
+    {% for subject in grades %}
+    <button class="btn btn-primary subject-button" onclick="showGradeForm('{{ subject.subject }}')">{{ subject.subject }}</button>
+    {% endfor %}
+</div>
 
-<h2>Total Points by Subject</h2>
+<!-- Button to open the modal for adding a new subject -->
+<button class="btn btn-success" onclick="openSubjectModal()">Neues Fach</button>
+<button class="btn btn-danger" onclick="openDeleteModal()">Entferne Fach</button>
+
+<!-- Modal for adding a new subject -->
+<div id="subject-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeSubjectModal()">&times;</span>
+        <h2>Add New Subject</h2>
+        <form method="POST" action="{{ url_for('main.add_subject') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="text" name="subject" placeholder="New Subject" required>
+            <button type="submit" class="btn btn-success">Fach Hinzufügen</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal for deleting subjects -->
+<div id="delete-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
+        <h2>Delete Subject</h2>
+        <ul id="subject-list">
+            {% for subject in grades %}
+            <li>
+                {{ subject.subject }}
+                <button class="btn btn-danger" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Delete</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<!-- Modal for adding grades -->
+<div id="grade-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeGradeModal()">&times;</span>
+        <h2>Add Grades for <span id="selected-subject"></span></h2>
+        <form method="POST" action="{{ url_for('main.add_grade') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="subject" id="subject-input">
+
+            <div class="form-group">
+                <label for="q1">Q1:</label>
+                <input type="number" name="q1" required>
+            </div>
+            <div class="form-group">
+                <label for="q2">Q2:</label>
+                <input type="number" name="q2" required>
+            </div>
+            <div class="form-group">
+                <label for="q3">Q3:</label>
+                <input type="number" name="q3" required>
+            </div>
+            <div class="form-group">
+                <label for="q4">Q4:</label>
+                <input type="number" name="q4" required>
+            </div>
+
+            <!-- Checkbox for LK -->
+            <div class="form-group">
+                <label for="is_lk">Is LK:</label>
+                <input type="checkbox" name="is_lk" value="true">
+            </div>
+
+            <button type="submit" class="btn btn-success">Add Grades</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function showGradeForm(subject) {
+    document.getElementById('selected-subject').innerText = subject;
+    document.getElementById('subject-input').value = subject;
+    document.getElementById('grade-modal').style.display = 'block';
+}
+
+function openSubjectModal() {
+    document.getElementById('subject-modal').style.display = 'block';
+}
+
+function closeSubjectModal() {
+    document.getElementById('subject-modal').style.display = 'none';
+}
+
+function openDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'block';
+}
+
+function closeDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'none';
+}
+
+function closeGradeModal() {
+    document.getElementById('grade-modal').style.display = 'none';
+}
+
+function deleteSubject(subjectId, subjectName) {
+    if (confirm('Are you sure you want to delete the subject: ' + subjectName + '?')) {
+        fetch('/grades/delete/' + subjectId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'  // Use the passed csrf_token variable
+            }
+        }).then(response => {
+            if (response.ok) {
+                location.reload();  // Reload the page to see the changes
+            } else {
+                alert('Failed to delete subject.');
+            }
+        });
+    }
+}
+
+
+// Close the modal when clicking outside of it
+window.onclick = function(event) {
+    if (event.target == document.getElementById('subject-modal')) {
+        closeSubjectModal();
+    } else if (event.target == document.getElementById('grade-modal')) {
+        closeGradeModal();
+    } else if (event.target == document.getElementById('delete-modal')) {
+        closeDeleteModal();
+    }
+}
+</script>
+
+<h1>Gesamt Punktzahl</h1>
+<p>Gesamt Punktzahl aller Fächer: <strong>{{ total_points }}</strong></p>
+
+<h1> Punkte pro Fach </h1>
 <ul>
-    {% for subject, points in total_points.items() %}
+    {% for subject, points in subject_points.items() %}
     <li>{{ subject }}: {{ points }} points</li>
     {% endfor %}
 </ul>
 
-<h2>All Grades</h2>
+<h1> Alle Noten </h1>
 <table class="table">
     <thead>
         <tr>
-            <th>Subject</th>
-            <th>Points</th>
+            <th>Fach</th>
+            <th>Q1</th>
+            <th>Q2</th>
+            <th>Q3</th>
+            <th>Q4</th>
+            <th>LK</th>
         </tr>
     </thead>
     <tbody>
         {% for grade in grades %}
         <tr>
             <td>{{ grade.subject }}</td>
-            <td>{{ grade.points }}</td>
+            <td>{{ grade.q1 }}</td>
+            <td>{{ grade.q2 }}</td>
+            <td>{{ grade.q3 }}</td>
+            <td>{{ grade.q4 }}</td>
+            <td>{{ 'Yes' if grade.is_lk else 'No' }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+</div>
 {% endblock %} 

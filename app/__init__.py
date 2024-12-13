@@ -2,6 +2,7 @@ from flask import Flask
 from .extensions import db, login_manager
 from flask_migrate import Migrate  # Import Flask-Migrate
 from .models import User  # Importiere das User-Modell später, um den Zirkularimport zu vermeiden.
+from flask_wtf.csrf import CSRFProtect
 
 migrate = Migrate()  # Initialize Flask-Migrate
 
@@ -13,6 +14,7 @@ def load_user(user_id):
 def create_app():
     app = Flask(__name__, template_folder="templates", static_folder="static")
     app.config.from_object("config.Config")
+    csrf = CSRFProtect(app)  # Initialize CSRF protection
     
     db.init_app(app)
     login_manager.init_app(app)

@@ -1,24 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>ToDo List</h1>
-<div class="card-container">
-<a href="{{ url_for('main.add_todo') }}" class="btn btn-primary" role="button">Add Task</a></div>
-<div class="card-container mt-3">
-    {% for task in tasks %}
-    <div class="todo-card">
-        <h5>{{ task.title }}</h5>
-        <p class="description">{{ task.description }}</p>
-        <small>Created at: {{ task.created_at }}</small><br>
-        <small>Deadline: {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else 'No deadline set' }}</small>
-        <div class="mt-2">
-            <form action="{{ url_for('main.edit_todo', task_id=task.id) }}" method="GET" style="display:inline;">
-                <button type="submit" class="btn btn-primary">Edit</button>
-            </form>
-            <form action="{{ url_for('main.delete_todo', task_id=task.id) }}" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-primary btn-delete btn-success">Delete</button>
-            </form>
-        </div>
+<div class="main-content">
+    <h1>Meine Aufgaben</h1>
+    <div class="card-container">
+        <a href="{{ url_for('main.add_todo') }}" class="btn btn-primary" role="button">Add Task</a></div>
+        <div class="card-container mt-3">
+            {% for task in tasks %}
+            <div class="todo-card">
+                <h5>{{ task.title }}</h5>
+                <p class="description">{{ task.description }}</p>
+                <small>Created at: {{ task.created_at }}</small><br>
+                <small>Deadline: {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else 'No deadline set' }}</small>
+                <div class="mt-2">
+                    <form action="{{ url_for('main.edit_todo', task_id=task.id) }}" method="GET" style="display:inline;">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                    <form action="{{ url_for('main.delete_todo', task_id=task.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-primary btn-delete btn-success">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>    
     </div>
-    {% endfor %}
 </div>
 {% endblock %}

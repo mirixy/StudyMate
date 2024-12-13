@@ -25,5 +25,13 @@ class ToDo(db.Model):
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(100), nullable=False)
-    points = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    q1 = db.Column(db.Integer, default=0)
+    q2 = db.Column(db.Integer, default=0)
+    q3 = db.Column(db.Integer, default=0)
+    q4 = db.Column(db.Integer, default=0)
+    is_lk = db.Column(db.Boolean, default=False)  # New field for LK status
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def calculate_total_points(self):
+        total = self.q1 + self.q2 + self.q3 + self.q4
+        return total * 2 if self.is_lk else total  # Weight by 2 if LK
