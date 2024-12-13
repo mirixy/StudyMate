@@ -20,6 +20,7 @@ class ToDo(db.Model):
     description = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    deadline = db.Column(db.DateTime, nullable=True)
 
 class Grade(db.Model):
     id = db.Column(db.Integer, primary_key=True)

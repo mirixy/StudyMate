@@ -9,6 +9,7 @@
     --text-secondary: #e0d5ff; /* Secondary text color */
     --text-muted: #b4a5d6; /* Muted text color */
     --border-color: #3d3447; /* Border color */
+    --alert-color: rgb(194, 65, 65); /* Red alert color */
 }
 
 body {
@@ -22,7 +23,7 @@ body {
     width: 250px; /* Fixed width for sidebar */
     background-color: var(--sidebar-bg);
     color: var(--text-primary);
-    padding: 20px;
+    padding: 20px; /* Padding for consistent spacing */
     position: fixed; /* Fix the sidebar */
     height: 100%; /* Full height */
     overflow-y: auto; /* Scroll if content overflows */
@@ -84,6 +85,7 @@ body {
     gap: 10px;
 }
 
+
 .todo-card {
     background-color: var(--card-bg);
     padding: 20px; /* Adjust padding to match login card */
@@ -91,8 +93,9 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     margin: 10px auto; /* Center the card */
-    width: 90%; /* Set a fixed width for the card */
+    
 }
+
 
 .todo-card h5 {
     margin: 0 0 10px;
@@ -120,27 +123,42 @@ h1 {
     margin-bottom: 20px;
 }
 
-.todo-form input, .todo-form textarea, .todo-form button {
+.todo-form input, .form-control {
     padding: 10px;
+    width: 90%;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
+    background-color: #3a3a3a; /* Dark input fields */
+    color: var(--text-secondary);
 }
 
-.todo-form input, .todo-form textarea {
+.todo-form textarea {
+    padding: 10px;
+    width: 90%;
+    height: 6em;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
     background-color: #3a3a3a; /* Dark input fields */
-    color: var(--text-primary);
+    color: var(--text-secondary);
 }
 
 .todo-form button {
-    background-color: var(--primary-purple);
-    color: var(--text-primary);
+    width: 100%; /* Button nimmt die gesamte Breite des Containers ein */
+    height: 50px; /* Höhe des Buttons */
+    padding: 15px; /* Innerer Abstand für einen größeren Eindruck */
+    font-size: 1.2rem; /* Größerer Text auf dem Button */
+    background-color: var(--primary-purple); /* Hintergrundfarbe */
+    color: var(--text-primary); /* Textfarbe */
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .todo-form button:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--primary-hover); /* Change color on hover */
 }
 
 /* Cards */
@@ -152,15 +170,7 @@ h1 {
     width: 100%;
 }
 
-.todo-card {
-    background-color: var(--card-bg);
-    margin-bottom: 0;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--border-color);
-}
+
 
 .todo-card:hover {
     transform: translateY(-5px);
@@ -270,6 +280,13 @@ h1 {
     text-align: center;
     color: var(--text-primary);
 }
+.login-card h2 {
+    color: var(--text-secondary);
+}
+.login-card p, footer , li{
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+}
 
 .login-card input {
     width: 100%; /* Full width for inputs */
@@ -297,18 +314,49 @@ h1 {
     font-size: 1.5rem; /* Adjust font size as needed */
 }
 
-/* Button Styles */
+
+.card-container {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow cards to wrap to the next line */
+    justify-content: space-between; /* Distribute space between cards */
+    width: 90%; /* Ensure the container uses full width */
+    padding: 20px; /* Add some padding */
+}
+.card-container a{
+    margin: 10px;
+}
+
+.todo-card {
+    flex: 1 1 calc(30% - 20px); /* Adjust the width of each card */
+    margin: 10px; /* Add margin around each card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    border-radius: 8px; /* Rounded corners */
+    background-color: var(--card-bg); /* Background color for cards */
+    padding: 15px; /* Padding inside cards */
+    transition: transform 0.2s; /* Smooth transition for hover effect */
+}
+
+.todo-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+
+
+/* General Button Styles */
 .btn {
     display: inline-block; /* Make it behave like a button */
     padding: 10px 20px; /* Add padding for size */
+    margin: 1em 0 1em 0;
     border: none; /* Remove default border */
     border-radius: 5px; /* Rounded corners */
     text-align: center; /* Center text */
     cursor: pointer; /* Change cursor to pointer */
     text-decoration: none; /* Remove underline */
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    width: 100%; /* Make buttons take full width of their container */
 }
 
+/* Specific Button Styles */
 .btn-primary {
     background-color: var(--primary-purple); /* Use your primary color */
     color: var(--text-primary); /* Text color */
@@ -316,4 +364,69 @@ h1 {
 
 .btn-primary:hover {
     background-color: var(--primary-hover); /* Change color on hover */
+}
+
+
+/* Specific Button Styles */
+.btn-delete {
+    background-color: var(--alert-color); /* Use your primary color */
+    color: var(--text-primary); /* Text color */
+}
+
+.btn-delete:hover {
+    background-color: var(--alert-color); /* Change color on hover */
+}
+
+.custom-btn {
+    width: 100%; /* Feste Breite */
+    height: 3em; /* Feste Höhe */
+    font-size: 1.2rem; /* Größerer Text */
+    margin-top: 1em;
+    padding: 10px 20px; /* Abstand innerhalb des Buttons */
+    color: var(--text-primary); /* Textfarbe */
+    border: none; /* Entferne den Rahmen */
+    border-radius: 5px; /* Abgerundete Ecken */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+    background-color: var(--primary-hover); /* Farbe beim Hover */
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between; /* Distribute space evenly */
+}
+
+.actions button {
+    flex: 1; /* Make buttons take equal space */
+    margin: 0 5px; /* Add some margin between buttons */
+}
+
+small {
+    color: var(--text-muted);
+}
+.description {
+    background-color: var(--dark-bg);
+    color: var(--text-secondary);
+    height: 6em;
+}
+
+
+.logo-container {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 20px; /* Space below the logo and text */
+}
+
+.logo {
+    width: 50%; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: -1rem; /* Space between logo and text */
+}
+
+.app-name {
+    color: var(--text-primary);
+    font-size: 1.5rem; /* Adjust font size as needed */
 }

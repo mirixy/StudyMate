@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{ form.title.label.text }}</h1>
+<div class="todo-card">
 <form method="POST">
     {{ form.hidden_tag() }}
     <div class="form-group">
@@ -11,8 +12,13 @@
         {{ form.description.label }}<br>
         {{ form.description(class="form-control") }}
     </div>
+    <div class="form-group mt-2">
+        {{ form.deadline.label }}<br>
+        {{ form.deadline(class="form-control", type="date") }}  <!-- Use type="date" for date picker -->
+    </div>
     <div class="form-group mt-3">
-        {{ form.submit(class="btn btn-success") }}
+        {{ form.submit(class="btn btn-primary custom-btn") }}
     </div>
 </form>
+</div>
 {% endblock %}

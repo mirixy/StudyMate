@@ -6,16 +6,19 @@
 </head>
 <body>
     <div class="sidebar">
-        <h2 class="app-name">StudyMate</h2>
+        <div class="logo-container">
+            <img src="/static/brand_logo.png" alt="Logo" class="logo">
+            <h2 class="app-name">StudyMate</h2>
+        </div>
         <div class="sidebar-nav">
             <a class="nav-item" href="/">Home</a>
             {% if current_user.is_authenticated %}
-            <a class="nav-item" href="/todos">ToDo List</a>
-            <a class="nav-item" href="/grades">Grade Tracker</a>
-            <a class="nav-item" href="/logout">Logout</a>
+            <a class="nav-item" href="/todos">ToDo Liste</a>
+            <a class="nav-item" href="/grades">Noten Tracker</a>
+            <a class="nav-item btn-delete" href="/logout">Logout</a>
             {% else %}
             <a class="nav-item" href="/login">Login</a>
-            <a class="nav-item" href="/register">Register</a>
+            <a class="nav-item" href="/register">Registrierung</a>
             {% endif %}
         </div>
     </div>

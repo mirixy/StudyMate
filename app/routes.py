@@ -7,7 +7,8 @@ from app.forms import ToDoForm
 main = Blueprint("main", __name__)
 
 import random
-from datetime import datetime
+
+from datetime import datetime, timedelta
 
 @main.route("/")
 @login_required
@@ -21,7 +22,28 @@ def home():
     ]
     current_date = datetime.now().strftime("%B %d, %Y")
     quote = random.choice(quotes)
-    return render_template("index.html", current_date=current_date, quote=quote)
+
+    # Get today's date
+    today = datetime.now().date()
+    tomorror = today + timedelta(days=1)
+    # Get the date for one week from today
+    next_week = tomorror + timedelta(days=7)
+
+    # Fetch tasks for today
+    today_tasks = ToDo.query.filter(
+        ToDo.user_id == current_user.id,
+        ToDo.deadline >= today,  # Check if the deadline is today or later
+        ToDo.deadline < today + timedelta(days=1)  # Ensure it's only today's tasks
+    ).all()
+
+    # Fetch upcoming tasks
+    upcoming_tasks = ToDo.query.filter(
+        ToDo.user_id == current_user.id,
+        ToDo.deadline > tomorror,
+        ToDo.deadline <= next_week
+    ).order_by(ToDo.deadline).all()
+
+    return render_template("index.html", current_date=current_date, quote=quote, today_tasks=today_tasks, upcoming_tasks=upcoming_tasks)
 
 @main.route("/register", methods=["GET", "POST"])
 def register():
@@ -79,7 +101,12 @@ def todos():
 def add_todo():
     form = ToDoForm()
     if form.validate_on_submit():
-        new_task = ToDo(title=form.title.data, description=form.description.data, user_id=current_user.id)
+        new_task = ToDo(
+            title=form.title.data,
+            description=form.description.data,
+            user_id=current_user.id,
+            deadline=form.deadline.data  # Include the deadline
+        )
         db.session.add(new_task)
         db.session.commit()
         flash('Task added successfully!', 'success')
@@ -114,6 +141,7 @@ def edit_todo(task_id):
     if form.validate_on_submit():
         task.title = form.title.data
         task.description = form.description.data
+        task.deadline = form.deadline.data  # Update the deadline
         db.session.commit()
         flash('Task updated successfully!', 'success')
         return redirect(url_for('main.todos'))
