@@ -16,8 +16,9 @@ Home
                 <footer>- Albert Einstein</footer>
             </blockquote>
         </div>
+        <div class="overview-container">
         <div class="overview">
-            <h2>Heutige Aufgaben</h2>
+            <h1>Heutige Aufgaben</h1>
             {% if today_tasks %}
                 <ul>
                     {% for task in today_tasks %}
@@ -29,7 +30,7 @@ Home
             {% endif %}
         </div>
         <div class="overview">
-            <h2>Aufgaben kommender Woche</h2>
+            <h1>Aufgaben kommender Woche</h1>
             {% if upcoming_tasks %}
                 <ul>
                     {% for task in upcoming_tasks %}
@@ -39,6 +40,7 @@ Home
             {% else %}
                 <p>Keine Aufgaben.</p>
             {% endif %}
+        </div>
         </div>
     </div>
 

@@ -147,10 +147,23 @@ body {
 h1 {
     text-align: center;
     color: var(--text-primary);
+    margin: 10px;
 }
 
 h2 {
     color: var(--text-secondary);
+}
+
+/* Fonts */
+li {
+    font-size: 1.5em;
+    color: var(--text-secondary);
+    list-style: none;
+}
+
+.quote-card footer {
+    color: var(--text-muted);
+    margin: 10px;
 }
 
 /* Forms */
@@ -503,4 +516,9 @@ table {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 500px;
     margin: 50px auto;
+}
+.overview-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
 }
