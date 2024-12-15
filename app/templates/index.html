@@ -5,8 +5,8 @@ Home
 {% endblock %}
 
 {% block content %}
-<div class="main-content">
-    <div class="todo-card greeter"> <!-- Use the same class for styling -->
+
+    <div class="greeter"> <!-- Use the same class for styling -->
         <h1>Dein persönliches Dashboard</h1>
         <h1>Willkommen, <strong>{{ current_user.username }}</strong>!</h1>
         <p>Heute ist der: <strong>{{ current_date }}</strong></p>
@@ -16,7 +16,7 @@ Home
                 <footer>- Albert Einstein</footer>
             </blockquote>
         </div>
-        <div class="todo-card overview">
+        <div class="overview">
             <h2>Heutige Aufgaben</h2>
             {% if today_tasks %}
                 <ul>
@@ -28,7 +28,7 @@ Home
                 <p>Keine Aufgaben.</p>
             {% endif %}
         </div>
-        <div class="todo-card overview">
+        <div class="overview">
             <h2>Aufgaben kommender Woche</h2>
             {% if upcoming_tasks %}
                 <ul>
@@ -41,5 +41,5 @@ Home
             {% endif %}
         </div>
     </div>
-</div>
+
 {% endblock %}

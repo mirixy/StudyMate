@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from app.models import ToDo, User, Grade
-from app.forms import ToDoForm
+from app.forms import ToDoForm, RegistrationForm, LoginForm
 from flask_wtf.csrf import generate_csrf
 
 main = Blueprint("main", __name__)
@@ -46,38 +46,43 @@ def home():
 
     return render_template("index.html", current_date=current_date, quote=quote, today_tasks=today_tasks, upcoming_tasks=upcoming_tasks)
 
-@main.route("/register", methods=["GET", "POST"])
+@main.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+    form = RegistrationForm()  # Create an instance of the RegistrationForm
+    if form.validate_on_submit():
+        # Check if the username already exists
+        existing_user = User.query.filter_by(username=form.username.data).first()
+        if existing_user:
+            flash('Username already exists. Please choose a different one.', 'danger')
+            return render_template("register.html", form=form)  # Re-render the form with the error
 
-        if User.query.filter_by(username=username).first():
-            flash("Benutzername existiert bereits.")
-            return redirect(url_for("main.register"))
-
-        new_user = User(username=username)
-        new_user.set_password(password)
+        # Create a new user and add to the database
+        new_user = User(username=form.username.data)
+        new_user.set_password(form.password.data)  # Hash the password
         db.session.add(new_user)
         db.session.commit()
-        flash("Registrierung erfolgreich. Bitte loggen Sie sich ein.")
-        return redirect(url_for("main.login"))
+        flash('Registration successful! You can now log in.', 'success')
+        return redirect(url_for('main.login'))  # Redirect to login page
 
-    return render_template("register.html")
+    return render_template("register.html", form=form)  # Pass the form to the template
 
-@main.route("/login", methods=["GET", "POST"])
+@main.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        user = User.query.filter_by(username=username).first()
-        if user and user.check_password(password):
+    form = LoginForm()  # Create an instance of the LoginForm
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(url_for("main.home"))
+            flash('Login successful!', 'success')
+            return redirect(url_for('main.home'))  # Redirect to the main page
         else:
-            flash("Ungültiger Benutzername oder Passwort.")
-    return render_template("login.html")
+            flash('Login failed. Check your username and password.', 'danger')
+            print("Invalid credentials")  # Debug statement
+    else:
+        print("Form validation failed")  # Debug statement
+        print(form.errors)  # Print form errors for debugging
+    return render_template("login.html", form=form)  # Pass the form to the template
+
 
 @main.route("/logout")
 @login_required

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="main-content">
+
 <h1>Deine Noten</h1>
 
 <h1>Fächer</h1>
@@ -12,18 +12,18 @@
 </div>
 
 <!-- Button to open the modal for adding a new subject -->
-<button class="btn btn-success" onclick="openSubjectModal()">Neues Fach</button>
-<button class="btn btn-danger" onclick="openDeleteModal()">Entferne Fach</button>
+<button class="btn btn-primary btn-success" onclick="openSubjectModal()">Neues Fach</button>
+<button class="btn btn-delete" onclick="openDeleteModal()">Entferne Fach</button>
 
 <!-- Modal for adding a new subject -->
 <div id="subject-modal" class="modal" style="display:none;">
     <div class="modal-content">
         <span class="close" onclick="closeSubjectModal()">&times;</span>
-        <h2>Add New Subject</h2>
+        <h2>Neues Fach</h2>
         <form method="POST" action="{{ url_for('main.add_subject') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-            <input type="text" name="subject" placeholder="New Subject" required>
-            <button type="submit" class="btn btn-success">Fach Hinzufügen</button>
+            <input type="text" name="subject" placeholder="Fachname" required>
+            <button type="submit" class="btn btn-primary btn-success">Fach Hinzufügen</button>
         </form>
     </div>
 </div>
@@ -32,12 +32,12 @@
 <div id="delete-modal" class="modal" style="display:none;">
     <div class="modal-content">
         <span class="close" onclick="closeDeleteModal()">&times;</span>
-        <h2>Delete Subject</h2>
+        <h2>Fach Entfernen</h2>
         <ul id="subject-list">
             {% for subject in grades %}
             <li>
                 {{ subject.subject }}
-                <button class="btn btn-danger" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Delete</button>
+                <button class="btn btn-danger" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Entfernen</button>
             </li>
             {% endfor %}
         </ul>
@@ -140,15 +140,28 @@ window.onclick = function(event) {
 </script>
 
 <h1>Gesamt Punktzahl</h1>
-<p>Gesamt Punktzahl aller Fächer: <strong>{{ total_points }}</strong></p>
-
+<p class="total-points">Gesamt Punktzahl aller Fächer: <strong>{{ total_points }}</strong></p>
+<div class="grading-container">
+<div class="subject_points">
 <h1> Punkte pro Fach </h1>
-<ul>
-    {% for subject, points in subject_points.items() %}
-    <li>{{ subject }}: {{ points }} points</li>
-    {% endfor %}
-</ul>
-
+<table>
+    <thead>
+        <tr>
+            <th>Fach</th>
+            <th>Punkte</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject, points in subject_points.items() %}
+        <tr>
+            <td>{{ subject }}</td>
+            <td>{{ points }} Punkte</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+<div class="all_grades">
 <h1> Alle Noten </h1>
 <table class="table">
     <thead>
@@ -175,4 +188,6 @@ window.onclick = function(event) {
     </tbody>
 </table>
 </div>
+</div>
+
 {% endblock %} 

@@ -1,11 +1,18 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block content %}
 <div class="login-card">
     <h1>Registrieren</h1>
-    <form method="POST">
-        <input type="text" name="username" placeholder="Benutzername" required>
-        <input type="password" name="password" placeholder="Passwort" required>
-        <button type="submit" class="btn btn-success">Registrieren</button>
+    <form method="POST" class="my-form">
+        {{ form.hidden_tag() }}  <!-- CSRF token -->
+        <div class="form-group username-group">
+            <label for="username">Username</label>
+            {{ form.username(class="form-control username-input") }}
+        </div>
+        <div class="form-group password-group">
+            <label for="password">Password</label>
+            {{ form.password(class="form-control password-input") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Registrieren</button>
     </form>
 </div>
 {% endblock %}
