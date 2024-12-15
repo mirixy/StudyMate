@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{ form.title.label.text }}</h1>
-<div class="login-card">
+<div class="add_form_container">
+    <div class="add_todo_form">
 <form method="POST">
     {{ form.hidden_tag() }}
     <div class="form-group">
@@ -20,5 +20,6 @@
         {{ form.submit(class="btn btn-primary custom-btn") }}
     </div>
 </form>
+    </div>
 </div>
 {% endblock %}

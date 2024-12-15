@@ -8,14 +8,16 @@ Home
 
     <div class="greeter"> <!-- Use the same class for styling -->
         <h1>Dein persönliches Dashboard</h1>
-        <h1>Willkommen, <strong>{{ current_user.username }}</strong>!</h1>
+        <h2>Willkommen, <strong>{{ current_user.username }}</strong>!</h2>
         <p>Heute ist der: <strong>{{ current_date }}</strong></p>
+        <div class="overview">
         <div class="quote-card">
             <blockquote>
                 <p>"{{ quote }}"</p>
                 <footer>- Albert Einstein</footer>
             </blockquote>
         </div>
+    </div>
         <div class="overview-container">
         <div class="overview">
             <h1>Heutige Aufgaben</h1>
