@@ -13,7 +13,7 @@ StudyMate is a web application designed to help students manage their tasks and 
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/studymate.git
+   git clone https://github.com/mirixy/studymate.git
    cd studymate
    ```
 
