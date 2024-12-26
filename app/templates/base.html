@@ -3,9 +3,9 @@
 <head>
     <title>StudyMate</title>
     <link rel="stylesheet" href="/static/style.css">
-    <link rel="icon" href="/static/brand_logo.png" type="image/png"> <!-- Link to the favicon -->
+    <link rel="icon" href="/static/icon.png" type="image/png"> <!-- Link to the favicon -->
 </head>
-<body>
+<body class="{{ 'light-mode' if current_user.light_mode else '' }}">
     <div class="container">
         <div class="app-container">
             <div class="sidebar">
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="main-content">
-                <div class="content">
+                <div class="messages">
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <ul>
@@ -36,10 +36,57 @@
                     </ul>
                     {% endif %}
                     {% endwith %}
+                </div>
+                <div class="content">
                     {% block content %}{% endblock %}
                 </div>
             </div>
-        </div>
-    </div>
+        </div> <!-- Close app-container -->
+        <div class="footer"> <!-- Footer -->
+            <div class="foo-content">
+                <div class="theme-mode">
+                    <div class="theme">
+                        <form id="theme-toggle-form" method="post" action="/toggle_light_mode">
+                            {{ form.hidden_tag() }}
+                            <button type="submit" id="theme-toggle">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1.6rem" height="1.6rem" viewBox="0 0 1.6rem 1.6rem">
+                                    <path fill="currentColor" d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5l1.43 1.43L4.93 20.5L3.5 19.07zm-6.18 2.43L11.41 5L9.97 6l.42-1.7L9 3.24l1.75-.12l.58-1.65L12 3.1l1.73.03l-1.35 1.13zm-3.3 3.61l-1.16-.73l-1.12.78l.34-1.32l-1.09-.83l1.36-.09l.45-1.29l.51 1.27l1.36.03l-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58l2.77-1.15l-.24 3.35zm4.33-2.7l1.15-2.77l2.2 2.54zm1.15-4.96l-1.14-2.78l3.34.24zM9.63 18.93l2.77 1.15l-2.53 2.19z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="theme-text">
+                        <p id="toggle">Light-Mode</p>
+                    </div>
+                </div>
+                <div> ©2024 StudyMate by Mirixy </div>
+                <div><a class="Socials" href="https://github.com/mirixy">
+                    <p><span class="social"></span> | GitHub</p>
+                </a></div>
+            </div>
+        </div> <!-- Close footer -->
+    </div> <!-- Close container -->
+    <script>
+       document.getElementById("theme-toggle-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission if needed
+
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.light_mode !== undefined) {
+                document.body.classList.toggle('light-mode', data.light_mode);
+                document.getElementById('toggle').textContent = data.light_mode ? 'Light-Mode' : 'Dark-Mode';
+            } else {
+                console.error('Error toggling mode:', data.error || 'Unknown error');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    </script>
 </body>
 </html>

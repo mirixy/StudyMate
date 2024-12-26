@@ -26,3 +26,8 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+
+
+class ThemeToggleForm(FlaskForm):
+        pass  # No fields needed, just for CSRF protection

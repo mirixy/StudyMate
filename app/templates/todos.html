@@ -9,7 +9,7 @@
         <div class="todo-card">
                 <h2>{{ task.title }}</h2>
                 <p class="description">{{ task.description }}</p>
-                <small>Created at: {{ task.created_at }}</small><br>
+                <small>Erstellt am: {{ task.created_at }}</small><br>
                 <small>Deadline: {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else 'No deadline set' }}</small>
             <div class="btn_container">
                 <form action="{{ url_for('main.edit_todo', task_id=task.id) }}" method="GET" style="display:inline;">

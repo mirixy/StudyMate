@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from app.models import ToDo, User, Grade
-from app.forms import ToDoForm, RegistrationForm, LoginForm
+from app.forms import ToDoForm, RegistrationForm, LoginForm, ThemeToggleForm
 from flask_wtf.csrf import generate_csrf
+import logging
 
 main = Blueprint("main", __name__)
 
@@ -11,9 +12,15 @@ import random
 
 from datetime import datetime, timedelta
 
+@main.context_processor
+def inject_user_preferences():
+    return {'light_mode': getattr(current_user, 'light_mode', False)}
+
 @main.route("/")
 @login_required
 def home():
+    csrf_token = generate_csrf()  # Generate CSRF token
+    form = ThemeToggleForm()  # Instantiate the form
     quotes = [
         "Life is like riding a bicycle. To keep your balance, you must keep moving.",
         "Imagination is more important than knowledge.",
@@ -44,7 +51,7 @@ def home():
         ToDo.deadline <= next_week
     ).order_by(ToDo.deadline).all()
 
-    return render_template("index.html", current_date=current_date, quote=quote, today_tasks=today_tasks, upcoming_tasks=upcoming_tasks)
+    return render_template("index.html", current_date=current_date, quote=quote, today_tasks=today_tasks, upcoming_tasks=upcoming_tasks, csrf_token=csrf_token, form=form)
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():
@@ -99,8 +106,10 @@ def protected():
 @main.route('/todos')
 @login_required
 def todos():
+    csrf_token = generate_csrf()  # Generate CSRF token
+    form = ThemeToggleForm()  # Instantiate the form
     tasks = ToDo.query.filter_by(user_id=current_user.id).order_by(ToDo.created_at.desc()).all()
-    return render_template('todos.html', tasks=tasks)
+    return render_template('todos.html', tasks=tasks, form=form, csrf_token=csrf_token)  # Pass the form to the template
 
 @main.route('/todos/add', methods=['GET', 'POST'])
 @login_required
@@ -122,6 +131,8 @@ def add_todo():
 @main.route('/grades', methods=['GET', 'POST'])
 @login_required
 def grades():
+    csrf_token = generate_csrf()  # Generate CSRF token
+    form = ThemeToggleForm()  # Instantiate the form
     if request.method == 'POST':
         if 'subject' in request.form and 'q1' in request.form:
             subject = request.form.get('subject')
@@ -150,8 +161,8 @@ def grades():
             subject_points[grade.subject] = 0
         subject_points[grade.subject] += subject_total
 
-    csrf_token = generate_csrf()
-    return render_template('grades.html', grades=grades, total_points=total_points, subject_points=subject_points, csrf_token=csrf_token)
+   
+    return render_template('grades.html', grades=grades, total_points=total_points, subject_points=subject_points, form=form, csrf_token=csrf_token)
 
 @main.route('/todos/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit_todo(task_id):
@@ -229,3 +240,10 @@ def delete_subject(subject_id):
     db.session.commit()
     flash('Subject deleted successfully!', 'success')
     return '', 204  # No content response
+
+@main.route('/toggle_light_mode', methods=['POST'])
+@login_required
+def toggle_light_mode():
+    current_user.light_mode = not current_user.light_mode
+    db.session.commit()  # Save changes to the database
+    return jsonify({"light_mode": current_user.light_mode})

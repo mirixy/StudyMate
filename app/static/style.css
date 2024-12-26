@@ -10,6 +10,16 @@
     --text-muted: #b4a5d6; /* Muted text color */
     --border-color: #3d3447; /* Border color */
     --alert-color: rgb(194, 65, 65); /* Red alert color */
+
+     /* Light mode variables */
+     --light-bg: #f0f8f0; /* Light background */
+     --light-sidebar-bg: #e0f7e0; /* Light sidebar background */
+     --light-card-bg: #d0f0d0; /* Light card background */
+     --light-text-primary: #333333; /* Primary text color in light mode */
+     --light-text-secondary: #555555; /* Secondary text color in light mode */
+     --light-border-color: #a0d0a0; /* Light border color */
+     --light-primary-green: #38af62;
+     --light-primary-green-hover: #19763a;
 }
 
 /* General Styling */
@@ -31,17 +41,21 @@ body {
 
 /* Layout */
 .container {
-    width: 80%; /* Breite der App */
-    max-width: 1200px; /* Maximale Breite */
-    height: 90vh; /* Höhe der App */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    width: 80%;
+    max-width: 1200px;
+    /* min-height: 100vh; /* Ensure it takes the full viewport height */
+    height: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px; /* Abgerundete Ecken */
-    overflow: hidden; /* Inhalte sauber abschneiden */
+    border-radius: 10px;
+    overflow: scroll;
 }
 
 .app-container {
-    display: flex; /* Flexbox aktivieren */
-    height: 100%; /* Volle Höhe innerhalb der App */
+    display: flex;
+    flex: 1; /* Allow it to grow and fill available space */
+    height: 100%;
 }
 
 /* Sidebar */
@@ -77,8 +91,8 @@ body {
 .main-content {
     flex: 1;
     padding: 2%;
-    overflow-y: auto; /* Allow scrolling */
     display: flex; /* Use flexbox for centering */
+    overflow-y: scroll;
     justify-content: center; /* Center horizontally */
     align-items: flex-start; /* Align items to the start */
     flex-direction: column; /* Stack content vertically */
@@ -147,6 +161,14 @@ li {
 .quote-card footer {
     color: var(--text-muted);
     margin: 10px;
+}
+
+small {
+    color: var(--text-secondary);
+}
+
+#toggle {
+    font-size: 1.5rem;
 }
 
 /* Forms */
@@ -274,6 +296,22 @@ big_btn {
 
 .subject-button:hover {
     background-color: var(--primary-hover); /* Change color on hover */
+}
+
+#theme-toggle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 2rem; /* Match the SVG width */
+    height: 2rem; /* Match the SVG height */
+}
+
+#theme-toggle:hover svg path {
+    fill: var(--light-border-color);
 }
 
 
@@ -529,4 +567,114 @@ table {
 label {
     color: var(--text-muted);
     font-size: 1.5em;
+}
+
+
+/* light mode */
+body.light-mode {
+    background-color: var(--light-bg);
+    color: var(--light-text-primary);
+}
+
+body.light-mode .sidebar {
+    background-color: var(--light-sidebar-bg);
+}
+
+body.light-mode .add_todo_form, body.light-mode .login-card, body.light-mode .register-content, body.light-mode .grading-container, body.light-mode .greeter, body.light-mode .footer {
+    background-color: var(--light-sidebar-bg);
+    color: var(--light-text-primary);
+}
+
+body.light-mode .overview, body.light-mode .todo-card {
+    background-color: var(--light-card-bg);
+    color: var(--light-text-primary);
+}
+
+body.light-mode .description {
+    background-color: var(--light-bg);
+    color: var(--light-text-secondary);
+}
+body.light-mode input,
+body.light-mode textarea {
+    background-color: #ffffff; /* White background for inputs */
+    color: var(--light-text-primary);
+    border: 1px solid var(--light-border-color);
+}
+
+body.light-mode svg path {
+    fill: var(--dark-bg);
+}
+body.light-mode .social {
+    background-image: "/static/github-mark.svg";
+}
+
+body.light-mode .btn-primary, body.light-mode .nav-item {
+    background-color: var(--light-primary-green);
+    color: var(--light-text-primary);
+}
+body.light-mode .btn-primary:hover, body.light-mode .nav-item:hover {
+    background-color: var(--light-primary-green-hover);
+}
+
+body.light-mode .btn-delete {
+    background-color: var(--alert-color);
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode p,
+body.light-mode small,
+body.light-mode table,
+body.light-mode ul,
+body.light-mode li,
+body.light-mode footer {
+    color: var(--light-text-primary);
+}
+
+body.light-mode .social {
+    background-image: url('/static/github-mark.svg');
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between; /* Align items to the edges */
+    align-items: center; /* Center items vertically */
+    padding: 10px; /* Add some padding */
+    background-color: var(--sidebar-bg); /* Match the sidebar background or choose another color */
+    color: var(--text-primary); /* Text color */
+    width: 100%; /* Ensure the footer takes the full width */
+    position: relative; /* Ensure it stays within the container */
+    flex-shrink: 0; /* Prevent the footer from shrinking */
+
+    
+}
+
+
+
+.foo-content {
+    display: flex;
+    justify-content: space-between; /* Space items evenly */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Ensure it takes the full width */
+    padding: 5px; /* Add some padding for spacing */
+}
+
+.Socials {
+    text-decoration: none;
+}
+
+.social {
+    display: inline-block; /* Ensure the element is inline-block to apply width and height */
+    width: 24px; /* Set the width of the icon */
+    height: 24px; /* Set the height of the icon */
+    background-image: url('/static/github-mark-white.svg'); /* Path to your icon */
+    background-size: cover; /* Ensure the image covers the entire element */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-position: center; /* Center the image */
+}
+
+.theme-mode {
+    display: flex;
+    align-items: center;
 }
