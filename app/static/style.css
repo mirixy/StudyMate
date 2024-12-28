@@ -269,19 +269,19 @@ button:hover {
     background-color: var(--primary-hover); /* Farbe beim Hover */
 }
 
+
 .big_button {
-    width: 30%;
-    height: 2em;
-    margin: 5% 0;
-    line-height: 2em; /* Center text vertically */
-    padding: 0; /* Remove padding to avoid misalignment */
+    width: 100%; /* Make the container full width */
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
 }
 
-big_btn {
-    text-align: center;
-    font-display: var(--text-muted);
-    line-height: 2em; /* Center text vertically */
-    padding: 0; /* Remove padding to avoid misalignment */
+.big_btn {
+    width: 100%; /* Make the button full width */
+    display: block; /* Ensure the button behaves like a block element */
+    text-align: center; /* Center the text within the button */
+    padding: 15px; /* Add padding for better appearance */
+    font-size: 1.2rem; /* Adjust font size as needed */
 }
 
 .subject-button {
@@ -403,7 +403,7 @@ table {
 .modal-content input {
     background-color: var(--dark-bg);
     width: 100%;
-    height: 2rem;
+    height: 3rem;
     color: var(--text-secondary);
     font-size: 2rem;
 }
@@ -437,7 +437,6 @@ table {
 }
 /* ToDo Card Styling */
 .card-container {
-   
     width: 100%;
     margin-top: 8%;
     display: flex; /* Use flexbox */

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 
 {% block title %}
 Home
@@ -10,39 +10,36 @@ Home
         <h1>Dein persönliches Dashboard</h1>
         <h2>Willkommen, <strong>{{ current_user.username }}</strong>!</h2>
         <p>Heute ist der: <strong>{{ current_date }}</strong></p>
-        <div class="overview">
-        <div class="quote-card">
-            <blockquote>
-                <p>"{{ quote }}"</p>
-                <footer>- Albert Einstein</footer>
-            </blockquote>
-        </div>
-    </div>
+        <blockquote>
+            <p>"{{ quote }}"</p>
+            <small>- Albert Einstein</small>
+        </blockquote>
+    
         <div class="overview-container">
-        <div class="overview">
-            <h1>Heutige Aufgaben</h1>
-            {% if today_tasks %}
+            <div class="overview">
+                <h1>Heutige Aufgaben</h1>
+                {% if today_tasks %}
                 <ul>
                     {% for task in today_tasks %}
                         <li>{{ task.title }} - Deadline: {{ task.deadline.strftime('%Y-%m-%d') }}</li>
                     {% endfor %}
                 </ul>
-            {% else %}
-                <p>Keine Aufgaben.</p>
-            {% endif %}
-        </div>
-        <div class="overview">
-            <h1>Aufgaben kommender Woche</h1>
-            {% if upcoming_tasks %}
+                {% else %}
+                    <p>Keine Aufgaben.</p>
+                {% endif %}
+            </div>
+            <div class="overview">
+                <h1>Aufgaben kommender Woche</h1>
+                {% if upcoming_tasks %}
                 <ul>
                     {% for task in upcoming_tasks %}
                         <li>{{ task.title }} - Deadline: {{ task.deadline.strftime('%Y-%m-%d') }}</li>
                     {% endfor %}
                 </ul>
-            {% else %}
-                <p>Keine Aufgaben.</p>
-            {% endif %}
-        </div>
+                {% else %}
+                    <p>Keine Aufgaben.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 

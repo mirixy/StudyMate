@@ -7,47 +7,47 @@
 <h1>Fächer</h1>
 <div class="subjects-grid grades">
     {% for subject in grades %}
-    <button class="grade-btn btn btn-primary subject-button" onclick="showGradeForm('{{ subject.subject }}')">{{ subject.subject }}</button>
+    <button class="btn btn-primary subject-button" onclick="showGradeForm('{{ subject.subject }}')">{{ subject.subject }}</button>
     {% endfor %}
 </div>
 
 <!-- Button to open the modal for adding a new subject -->
-<div class="grade-button-container">
-    <button id="openSubjectModal" class="btn btn-primary btn-success">Neues Fach</button>
-    <button id="openDeleteModal" class="btn btn-delete">Entferne Fach</button>
-</div>
-
+<button class="btn btn-primary btn-success" onclick="openSubjectModal()">Neues Fach</button>
+<button class="btn btn-delete" onclick="openDeleteModal()">Entferne Fach</button>
 
 <!-- Modal for adding a new subject -->
-<dialog id="subject-modal" class="modal">
+<div id="subject-modal" class="modal" style="display:none;">
     <div class="modal-content">
-        <h2> Neues Fach</h2>
+        <span class="close" onclick="closeSubjectModal()">&times;</span>
+        <h2>Neues Fach</h2>
         <form method="POST" action="{{ url_for('main.add_subject') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <input type="text" name="subject" placeholder="Fachname" required>
-            <button id="close-subject" type="submit" class="btn btn-primary btn-success">Fach Hinzufügen</button>
+            <button type="submit" class="btn btn-primary btn-success">Fach Hinzufügen</button>
         </form>
     </div>
-</dialog>
+</div>
 
 <!-- Modal for deleting subjects -->
-<dialog id="delete-modal" class="modal">
+<div id="delete-modal" class="modal" style="display:none;">
     <div class="modal-content">
+        <span class="close" onclick="closeDeleteModal()">&times;</span>
         <h2>Fach Entfernen</h2>
         <ul id="subject-list">
             {% for subject in grades %}
             <li>
                 {{ subject.subject }}
-                <button class="btn btn-danger btn-delete" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Entfernen</button>
+                <button class="btn btn-danger" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Entfernen</button>
             </li>
             {% endfor %}
         </ul>
     </div>
-</dialog>
+</div>
 
 <!-- Modal for adding grades -->
-<dialog id="grade-modal" class="modal">
+<div id="grade-modal" class="modal" style="display:none;">
     <div class="modal-content">
+        <span class="close" onclick="closeGradeModal()">&times;</span>
         <h2>Add Grades for <span id="selected-subject"></span></h2>
         <form method="POST" action="{{ url_for('main.add_grade') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -76,12 +76,68 @@
                 <input type="checkbox" name="is_lk" value="true">
             </div>
 
-            <button type="submit" class="add-grade-btn btn btn-success">Add Grades</button>
+            <button type="submit" class="btn btn-success">Add Grades</button>
         </form>
     </div>
-</dialog>
+</div>
+
+<script>
+function showGradeForm(subject) {
+    document.getElementById('selected-subject').innerText = subject;
+    document.getElementById('subject-input').value = subject;
+    document.getElementById('grade-modal').style.display = 'block';
+}
+
+function openSubjectModal() {
+    document.getElementById('subject-modal').style.display = 'block';
+}
+
+function closeSubjectModal() {
+    document.getElementById('subject-modal').style.display = 'none';
+}
+
+function openDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'block';
+}
+
+function closeDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'none';
+}
+
+function closeGradeModal() {
+    document.getElementById('grade-modal').style.display = 'none';
+}
+
+function deleteSubject(subjectId, subjectName) {
+    if (confirm('Are you sure you want to delete the subject: ' + subjectName + '?')) {
+        fetch('/grades/delete/' + subjectId, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'  // Use the passed csrf_token variable
+            }
+        }).then(response => {
+            if (response.ok) {
+                location.reload();  // Reload the page to see the changes
+            } else {
+                alert('Failed to delete subject.');
+            }
+        });
+    }
+}
 
 
+// Close the modal when clicking outside of it
+window.onclick = function(event) {
+    if (event.target == document.getElementById('subject-modal')) {
+        closeSubjectModal();
+    } else if (event.target == document.getElementById('grade-modal')) {
+        closeGradeModal();
+    } else if (event.target == document.getElementById('delete-modal')) {
+        closeDeleteModal();
+    }
+}
+</script>
 
 <h1>Gesamt Punktzahl</h1>
 <p class="total-points">Gesamt Punktzahl aller Fächer: <strong>{{ total_points }}</strong></p>

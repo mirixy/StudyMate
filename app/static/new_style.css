@@ -1,0 +1,474 @@
+/* Set all colors as variables here */
+:root {
+    --primary-purple: #9b6dff; /* Main purple color */
+    --primary-hover: #8557f7; /* Darker purple for hover effects */
+    --dark-bg: #1e1926; /* Dark background */
+    --sidebar-bg: #2a2433; /* Sidebar background */
+    --card-bg: #332b3d; /* Card background */
+    --text-primary: #ffffff; /* Primary text color */
+    --text-secondary: #e0d5ff; /* Secondary text color */
+    --text-muted: #b4a5d6; /* Muted text color */
+    --border-color: #3d3447; /* Border color */
+    --alert-color: rgb(194, 65, 65); /* Red alert color */
+
+     /* Light mode variables */
+     --light-bg: #f0f8f0; /* Light background */
+     --light-sidebar-bg: #e0f7e0; /* Light sidebar background */
+     --light-card-bg: #d0f0d0; /* Light card background */
+     --light-text-primary: #333333; /* Primary text color in light mode */
+     --light-text-secondary: #555555; /* Secondary text color in light mode */
+     --light-border-color: #a0d0a0; /* Light border color */
+     --light-primary-green: #38af62; /* Main green color */
+     --light-primary-green-hover: #19763a; /* Darker green for hover effects */
+     --light-alert-color: rgb(192, 84, 84); /* Light red alert color */
+}
+
+/* Text management */
+h1, h2, h3, h4 {
+    color: var(--light-text-primary);
+}
+
+p {
+    color: var(--light-text-secondary);
+    font-size: 1.5rem;
+}
+
+a, li, ul{
+    color: var(--light-text-secondary);
+    font-size: 1.5rem;
+    text-decoration: none;
+    list-style: none;
+}
+
+small, footer {
+    color: var(--light-text-secondary);
+}
+
+/* Button styling */
+.btn {
+    width: 100%;
+    padding: 5%;
+    border-radius: 5px; /* Rounded corners */
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--light-primary-green);
+    color: var(--text-primary);
+}
+
+.btn-delete {
+    background-color: var(--light-alert-color);
+    color: var(--text-primary);
+}
+
+
+
+/* General settings */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    justify-items: center;
+    background-color: var(--light-bg);
+    
+}
+
+
+/* Layout settings */
+.app-container {
+    width: 80%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+    "navbar navbar"
+    "sidebar main"
+    "sidebar main"
+    "footer footer";
+}
+
+/* Probably for mobile devices */
+.navbar {
+    grid-area: navbar;
+    background-color: var(--light-sidebar-bg);
+    padding: 2em;
+}
+
+/* Sidebar Navigation and Items */
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: var(--light-sidebar-bg);
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 5em;
+}
+
+
+.nav-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.nav-item {
+    width: 80%;
+    text-decoration: none;
+    margin-bottom: 10px; /* Space between buttons */
+    transition: background-color 0.3s ease; /* Transition effect */
+}
+
+/* Main content and Items */
+
+.main {
+    grid-area: main;
+    background-color: var(--light-bg);
+    padding: 1.5rem;
+    justify-items: center;
+    overflow-y: auto;
+    height: calc(100vh - 1fr);
+}
+
+
+.greeter {
+    width: 100%;
+}
+
+blockquote {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    background-color: var(--light-card-bg);
+    margin: 1em 0 1em 0;
+}
+
+.overview-container {
+    display: flex;
+    width: 100%;
+    background-color: var(--light-card-bg);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    
+}
+
+.overview {
+    background-color: var(--light-card-bg);
+    min-height: 30em;
+    padding: 1.5rem;
+    
+}
+
+/* ToDo Section */
+.todo-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.title-todo {
+    align-items: center;
+}
+
+.big-button {
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    margin: 1em 0 1em 0;
+ 
+    
+}
+
+.big-btn {
+    display: flex;
+    width: calc(300px - 10%);
+    height: 3rem;
+    border-radius: 2em;
+    justify-content: center;
+    align-items: center;
+    
+}
+.big-btn:hover {
+    background-color: var(--light-primary-green-hover);
+}
+
+.card-container {
+    display: flex; /* Use flexbox */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 1rem;
+    text-wrap:wrap;
+}
+
+.todo-card {
+    flex: 1 1 calc(30% - 1em); /* Allow cards to grow and shrink, with a base width */
+    background-color: var(--light-card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    height: 400px; /* Set a fixed height for the card */
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+}
+
+.description {
+   width: 100%;
+   height: 6rem;
+   overflow-y:auto;
+   scroll-behavior: smooth;
+   
+}
+
+
+/* Grades */
+
+.grades {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between; /* Distribute space between items */
+    gap: 1rem; /* Space between items */
+}
+
+
+.grading-container {
+    display: flex;
+    justify-content: center;
+}
+
+.subject_points {
+    margin: 20px;
+}
+
+.all_grades {
+    margin: 20px;
+}
+
+.total-points {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.subject-button {
+    flex: 1 1 calc(25% - 1rem); /* Allow each button to take up to 25% of the row, minus gap */
+    min-width: 200px; /* Minimum width for each button */
+    padding: 15px; /* Adjust padding for a rectangular look */
+    font-size: 16px; /* Font size for better readability */
+    border-radius: 5px; /* Slightly rounded corners */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.subject-button:hover {
+    background-color: var(--primary-hover); /* Change color on hover */
+}
+
+.grade-button-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.grade-button-container button {
+    border-radius: 1em;
+}
+
+
+
+
+/* Footer layout and items */
+
+.footer {
+    grid-area: footer;
+    display: flex;
+    padding: 1rem;
+    justify-content:space-around;
+    background-color: var(--light-sidebar-bg);
+    align-items: center;
+}
+
+.theme {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+svg path {
+    fill: var(--light-text-secondary);
+}
+
+
+#theme-toggle {
+    border-style: none;
+    background-color: transparent;
+    width: 2rem;
+    height: 2rem;
+}
+
+#theme-toggle:hover {
+    border-style: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+#theme-toggle:hover svg path {
+    fill: var(--dark-bg); /* Change color of the SVG when hovering over the button */
+}
+
+body.light-mode #theme-toggle:hover svg path {
+    fill: var(--light-border-color);
+}
+
+body.light-mode #theme-toggle:hover {
+    background-color: rgba(109, 109, 109, 0.669);
+}
+
+
+.social-container {
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.Socials {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.social {
+    display: flex;
+    width: 24px; /* Set the width of the icon */
+    height: 24px; /* Set the height of the icon */
+    background-image: url("/static/github-mark.svg");
+    background-size: cover; /* Ensure the image covers the entire element */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-position: center; /* Center the image */
+}
+
+
+
+
+
+/* Dark Mode */
+
+body.light-mode {
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+}
+
+body.light-mode h1,
+body.light-mode h2, 
+body.light-mode h3,
+body.light-mode h4 {
+    color: var(--text-primary);
+}
+
+body.light-mode a,
+body.light-mode li,
+body.light-mode ul,
+body.light-mode small,
+body.light-mode footer,
+body.light-mode p {
+    color: var(--text-secondary);   
+}
+
+
+body.light-mode .btn-primary,
+body.light-mode .big-btn {
+    background-color: var(--primary-purple);
+}
+
+body.light-mode .btn-primary:hover,
+body.light-mode .big-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+body.light-mode .btn-delete {
+    background-color: var(--alert-color);
+}
+
+body.light-mode .sidebar,
+body.light-mode .navbar,
+body.light-mode .footer {
+    background-color: var(--sidebar-bg);
+}
+
+body.light-mode .main {
+    background-color: var(--dark-bg);
+}
+
+body.light-mode .todo-card,
+body.light-mode .overview,
+body.light-mode .overview-container,
+body.light-mode blockquote {
+    background-color: var(--card-bg);
+}
+body.light-mode .description {
+    background-color: var(--border-color);
+}
+
+body.light-mode svg path {
+    fill: var(--text-primary);
+}
+
+body.light-mode .social {
+    background-image: url("/static/github-mark-white.svg");
+}
+
+body.light-mode dialog {
+    background-color: var(--card-bg);
+}
+
+/* Modals */
+dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--light-card-bg);
+  }
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    width: 100vh;
+    padding: 1em;
+    gap: 1em;
+}
+
+.modal-content h2 {
+    font-size: 3rem;
+}
+
+.modal-content input {
+    font-size: 3rem;
+    margin-bottom: 1em;
+}
+.modal-content #close-subject {
+    font-size: 2rem;
+}
+
