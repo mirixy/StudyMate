@@ -9,6 +9,7 @@ Home
     <div class="greeter"> <!-- Use the same class for styling -->
         <h1>Dein persönliches Dashboard</h1>
         <h2>Willkommen, <strong>{{ current_user.username }}</strong>!</h2>
+        <h2>Dein Theme ist: {{ current_theme }}</h2>
         <p>Heute ist der: <strong>{{ current_date }}</strong></p>
         <blockquote>
             <p>"{{ quote }}"</p>

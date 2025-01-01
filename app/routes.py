@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session
 from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from app.models import ToDo, User, Grade
-from app.forms import ToDoForm, RegistrationForm, LoginForm, ThemeToggleForm
+from app.forms import ToDoForm, RegistrationForm, LoginForm, ThemeForm
 from flask_wtf.csrf import generate_csrf
 import logging
 
@@ -13,14 +13,18 @@ import random
 from datetime import datetime, timedelta
 
 @main.context_processor
-def inject_user_preferences():
-    return {'light_mode': getattr(current_user, 'light_mode', False)}
+def inject_theme():
+    current_theme = current_user.get_theme() or 'system'
+    theme_form = ThemeForm(theme=current_theme)
+    return {
+        'current_theme': current_theme,
+        'theme_form': theme_form
+    }
 
-@main.route("/")
+@main.route("/", methods=['GET', 'POST'])
 @login_required
 def home():
-    csrf_token = generate_csrf()  # Generate CSRF token
-    form = ThemeToggleForm()  # Instantiate the form
+    
     quotes = [
         "Life is like riding a bicycle. To keep your balance, you must keep moving.",
         "Imagination is more important than knowledge.",
@@ -51,34 +55,34 @@ def home():
         ToDo.deadline <= next_week
     ).order_by(ToDo.deadline).all()
 
-    return render_template("index.html", current_date=current_date, quote=quote, today_tasks=today_tasks, upcoming_tasks=upcoming_tasks, csrf_token=csrf_token, form=form)
+    return render_template("index.html", current_date=current_date, quote=quote, today_tasks=today_tasks, upcoming_tasks=upcoming_tasks)
 
 @main.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()  # Create an instance of the RegistrationForm
-    if form.validate_on_submit():
+    reg_form = RegistrationForm()  # Create an instance of the RegistrationForm
+    if reg_form.validate_on_submit():
         # Check if the username already exists
-        existing_user = User.query.filter_by(username=form.username.data).first()
+        existing_user = User.query.filter_by(username=reg_form.username.data).first()
         if existing_user:
             flash('Username already exists. Please choose a different one.', 'danger')
-            return render_template("register.html", form=form)  # Re-render the form with the error
+            return render_template("register.html", reg_form=reg_form)  # Re-render the form with the error
 
         # Create a new user and add to the database
-        new_user = User(username=form.username.data)
-        new_user.set_password(form.password.data)  # Hash the password
+        new_user = User(username=reg_form.username.data)
+        new_user.set_password(reg_form.password.data)  # Hash the password
         db.session.add(new_user)
         db.session.commit()
         flash('Registration successful! You can now log in.', 'success')
         return redirect(url_for('main.login'))  # Redirect to login page
 
-    return render_template("register.html", form=form)  # Pass the form to the template
+    return render_template("register.html", reg_form=reg_form)  # Pass the form to the template
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()  # Create an instance of the LoginForm
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
+    login_form = LoginForm()  # Create an instance of the LoginForm
+    if login_form.validate_on_submit():
+        user = User.query.filter_by(username=login_form.username.data).first()
+        if user and user.check_password(login_form.password.data):
             login_user(user)
             flash('Login successful!', 'success')
             return redirect(url_for('main.home'))  # Redirect to the main page
@@ -87,8 +91,8 @@ def login():
             print("Invalid credentials")  # Debug statement
     else:
         print("Form validation failed")  # Debug statement
-        print(form.errors)  # Print form errors for debugging
-    return render_template("login.html", form=form)  # Pass the form to the template
+        print(login_form.errors)  # Print form errors for debugging
+    return render_template("login.html", login_form=login_form)  # Pass the form to the template
 
 
 @main.route("/logout")
@@ -103,36 +107,42 @@ def logout():
 def protected():
     return render_template("protected.html", username=current_user.username)
 
-@main.route('/todos')
+@main.route('/todos', methods=['GET', 'POST'])
 @login_required
 def todos():
-    csrf_token = generate_csrf()  # Generate CSRF token
-    form = ThemeToggleForm()  # Instantiate the form
-    tasks = ToDo.query.filter_by(user_id=current_user.id).order_by(ToDo.created_at.desc()).all()
-    return render_template('todos.html', tasks=tasks, form=form, csrf_token=csrf_token)  # Pass the form to the template
+    tasks = ToDo.query.filter_by(user_id=current_user.id).all()
+    todo_form = ToDoForm()  # For the ToDo modal
+    csrf_token = todo_form.csrf_token  # Include CSRF token if needed
+    return render_template(
+        'todos.html',
+        tasks=tasks,
+        todo_form=todo_form,  # Pass ToDoForm
+        csrf_token=csrf_token
+    )
 
-@main.route('/todos/add', methods=['GET', 'POST'])
+@main.route('/todos/add', methods=['POST'])
 @login_required
 def add_todo():
-    form = ToDoForm()
-    if form.validate_on_submit():
+    todo_form = ToDoForm()
+    if todo_form.validate_on_submit():
         new_task = ToDo(
-            title=form.title.data,
-            description=form.description.data,
+            title=todo_form.title.data,
+            description=todo_form.description.data,
             user_id=current_user.id,
-            deadline=form.deadline.data  # Include the deadline
+            deadline=todo_form.deadline.data
         )
         db.session.add(new_task)
         db.session.commit()
         flash('Task added successfully!', 'success')
         return redirect(url_for('main.todos'))
-    return render_template('add_todo.html', form=form)
+    
+    flash('Failed to add task. Please check your input.', 'danger')
+    return redirect(url_for('main.todos'))
 
 @main.route('/grades', methods=['GET', 'POST'])
 @login_required
 def grades():
     csrf_token = generate_csrf()  # Generate CSRF token
-    form = ThemeToggleForm()  # Instantiate the form
     if request.method == 'POST':
         if 'subject' in request.form and 'q1' in request.form:
             subject = request.form.get('subject')
@@ -162,20 +172,22 @@ def grades():
         subject_points[grade.subject] += subject_total
 
    
-    return render_template('grades.html', grades=grades, total_points=total_points, subject_points=subject_points, form=form, csrf_token=csrf_token)
+    return render_template('grades.html', grades=grades, total_points=total_points, subject_points=subject_points, csrf_token=csrf_token)
 
 @main.route('/todos/edit/<int:task_id>', methods=['GET', 'POST'])
 def edit_todo(task_id):
     task = ToDo.query.get_or_404(task_id)
-    form = ToDoForm(obj=task)
-    if form.validate_on_submit():
-        task.title = form.title.data
-        task.description = form.description.data
-        task.deadline = form.deadline.data  # Update the deadline
+    todo_form = ToDoForm(obj=task)
+    if todo_form.validate_on_submit():
+        task.title = todo_form.title.data
+        task.description = todo_form.description.data
+        task.deadline = todo_form.deadline.data  # Update the deadline
         db.session.commit()
         flash('Task updated successfully!', 'success')
         return redirect(url_for('main.todos'))
-    return render_template('edit_todo.html', form=form)
+    flash('Failed to add task. Please check your input.', 'danger')
+    return redirect(url_for('main.todos'))
+    #return render_template('edit_todo.html', todo_form=todo_form, theme_form=theme_form)
 
 @main.route('/todos/delete/<int:task_id>', methods=['POST'])
 def delete_todo(task_id):
@@ -241,9 +253,21 @@ def delete_subject(subject_id):
     flash('Subject deleted successfully!', 'success')
     return '', 204  # No content response
 
-@main.route('/toggle_light_mode', methods=['POST'])
+
+@main.route('/update-theme', methods=['POST'])
 @login_required
-def toggle_light_mode():
-    current_user.light_mode = not current_user.light_mode
-    db.session.commit()  # Save changes to the database
-    return jsonify({"light_mode": current_user.light_mode})
+def update_theme():
+    data = request.get_json()
+    new_theme = data.get('theme')
+
+    if not new_theme:
+        return jsonify({'error': 'No theme provided'}), 400
+
+    # Update the user's theme in the database
+    current_user.set_theme(new_theme)  # Assuming this method exists
+    db.session.commit()
+    
+    return jsonify({'success': True})
+
+
+

@@ -2,9 +2,12 @@
 {% block content %}
 
 <div class="todo-wrapper">
-    <h1 class="title-todo">Meine Aufgaben</h1>
-    <div class="big-button">
-            <a href="{{ url_for('main.add_todo') }}" class="btn-primary big-btn">Neue Aufgabe</a>
+    
+    <div id="add-todo-container">
+        <h1 class="title-todo">Meine Aufgaben</h1>
+        <div class="big-button">
+        <button class="btn-primary big-btn" id="add-todo-btn">Neue Aufgabe</button>
+        </div>
     </div>
     <div class="card-container">
         {% for task in tasks %}
@@ -14,15 +17,73 @@
                 <small>Erstellt am: {{ task.created_at }}</small>
                 <small>Deadline: {{ task.deadline.strftime('%Y-%m-%d') if task.deadline else 'No deadline set' }}</small>
         
-                <form action="{{ url_for('main.edit_todo', task_id=task.id) }}" method="GET" style="display:inline;">
-                    <button type="submit" class="btn btn-primary">Bearbeiten</button>
-                </form>
+               
+                    <button type="button" class="btn btn-primary" id="edit-todo-btn-{{ task.id }}" onclick="openEditModal({{ task.id }})">
+                        Bearbeiten
+                    </button>
+                
                 <form action="{{ url_for('main.delete_todo', task_id=task.id) }}" method="POST" style="display:inline;">
-                    {{ form.hidden_tag() }}
+                    {{ todo_form.hidden_tag() }}
                     <button type="submit" class="btn btn-primary btn-delete">Löschen</button>
                 </form>
         </div>
+        <script type="application/json" id="task-data-{{ task.id }}">
+            {
+                "title": "{{ task.title|escape }}",
+                "description": "{{ task.description|escape }}",
+                "deadline": "{{ task.deadline.strftime('%Y-%m-%d') if task.deadline else '' }}"
+            }
+        </script>
         {% endfor %}  
     </div>
 </div>
+
+<dialog class="modal" id="add-todo">
+    <div class="modal-content">
+        <button type="button" id="close-dialog" class="close-btn">X</button>
+        <form class="add-form" action="{{ url_for('main.add_todo') }}" method="POST">
+            {{ todo_form.hidden_tag() }}
+            <div class="form-group">
+                {{ todo_form.title.label }}<br>
+                {{ todo_form.title(class="form-control") }}
+            </div>
+            <div class="form-group mt-2">
+                {{ todo_form.description.label }}<br>
+                {{ todo_form.description(class="form-control") }}
+            </div>
+            <div class="form-group mt-2">
+                {{ todo_form.deadline.label }}<br>
+                {{ todo_form.deadline(class="form-control", type="date") }}
+            </div>
+            <div class="form-group mt-3">
+                {{ todo_form.submit(class="btn btn-primary custom-btn") }}
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<dialog class="modal" id="edit-todo">
+    <div class="modal-content">
+        <form method="POST" action="">
+            {{ todo_form.hidden_tag() }}
+            <div class="form-group">
+                {{ todo_form.title.label }}<br>
+                {{ todo_form.title(class="form-control", id="title-input") }}
+            </div>
+            <div class="form-group mt-2">
+                {{ todo_form.description.label }}<br>
+                {{ todo_form.description(class="form-control", id="description-input") }}
+            </div>
+            <div class="form-group mt-2">
+                {{ todo_form.deadline.label }}<br>
+                {{ todo_form.deadline(class="form-control", type="date", id="deadline-input") }}
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+        <button onclick="document.getElementById('edit-todo').close()" class="btn btn-secondary">Cancel</button>
+    </div>
+</dialog>
+
 {% endblock %}

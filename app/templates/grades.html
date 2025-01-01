@@ -5,14 +5,19 @@
 <h1>Deine Noten</h1>
 
 <h1>Fächer</h1>
-<div class="subjects-grid grades">
+
+<dialog class="modal" id="dropdown-menu-grades">
+    <div class="modal-content">
+        <button class="btn btn-delete" id="close-mobile-grades" formmethod="dialog">X</button>
     {% for subject in grades %}
-    <button class="grade-btn btn btn-primary subject-button" onclick="showGradeForm('{{ subject.subject }}')">{{ subject.subject }}</button>
+    <button class="grade-btn btn btn-primary subject-button" id='grades-subject' onclick="showGradeForm('{{ subject.subject }}')">{{ subject.subject }}</button>
     {% endfor %}
-</div>
+    </div>
+</dialog>
 
 <!-- Button to open the modal for adding a new subject -->
 <div class="grade-button-container">
+    <button class="btn btn-primary btn-success" id="courses">Fächer</button>
     <button id="openSubjectModal" class="btn btn-primary btn-success">Neues Fach</button>
     <button id="openDeleteModal" class="btn btn-delete">Entferne Fach</button>
 </div>
@@ -38,7 +43,7 @@
             {% for subject in grades %}
             <li>
                 {{ subject.subject }}
-                <button class="btn btn-danger btn-delete" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Entfernen</button>
+                <button class="btn btn-danger btn-delete" id="close-delete" onclick="deleteSubject('{{ subject.id }}', '{{ subject.subject }}')">Entfernen</button>
             </li>
             {% endfor %}
         </ul>
@@ -48,6 +53,7 @@
 <!-- Modal for adding grades -->
 <dialog id="grade-modal" class="modal">
     <div class="modal-content">
+        <button id="close-grades" formmethod="dialog">X</button>
         <h2>Add Grades for <span id="selected-subject"></span></h2>
         <form method="POST" action="{{ url_for('main.add_grade') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -76,7 +82,7 @@
                 <input type="checkbox" name="is_lk" value="true">
             </div>
 
-            <button type="submit" class="add-grade-btn btn btn-success">Add Grades</button>
+            <button type="submit" class="add-grade-btn btn btn-success" id="add-grades-to-subject">Add Grades</button>
         </form>
     </div>
 </dialog>

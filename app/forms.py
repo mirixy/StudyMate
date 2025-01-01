@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField
+from wtforms import StringField, TextAreaField, SubmitField, DateField, IntegerField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Length
 
 class ToDoForm(FlaskForm):
@@ -29,5 +29,10 @@ class LoginForm(FlaskForm):
 
 
 
-class ThemeToggleForm(FlaskForm):
-        pass  # No fields needed, just for CSRF protection
+class ThemeForm(FlaskForm):
+    theme = SelectField('Select Theme', choices=[
+        ('system', 'System'),
+        ('dark', 'Dark'),
+        ('light', 'Light')
+    ], validators=[DataRequired()])
+    submit = SubmitField('Save Changes')

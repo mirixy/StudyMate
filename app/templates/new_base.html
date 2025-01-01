@@ -1,58 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="{{ current_theme }}">
     <head>
         <title>StudyMate</title> <!-- Title of the App -->
         <link rel="stylesheet" href="/static/new_style.css">
         <link rel="icon" href="/static/icon.png" type="image/png">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body class="{{ 'light-mode' if current_user.light_mode else '' }}">
-        <div class="app-container">
-            <nav class="navbar">
-                Navbar
+    <body>
+        <div class="container">
+        <div class="wrapper">
+            <nav>
+                <ul class="nav-list">
+                    <li id="logo-header">
+                        <div class="logo-container">
+                            <img src="/static/brand_logo.png" class="logo"/>
+                        <span class="first-clr">Study</span><span class="sec-clr">Mate</span></div>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-delete" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                   
+                    {% endif %}
+                    <li class="hide-mobile-view">
+                        <div class="theme-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5l1.43 1.43L4.93 20.5L3.5 19.07zm-6.18 2.43L11.41 5L9.97 6l.42-1.7L9 3.24l1.75-.12l.58-1.65L12 3.1l1.73.03l-1.35 1.13zm-3.3 3.61l-1.16-.73l-1.12.78l.34-1.32l-1.09-.83l1.36-.09l.45-1.29l.51 1.27l1.36.03l-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58l2.77-1.15l-.24 3.35zm4.33-2.7l1.15-2.77l2.2 2.54zm1.15-4.96l-1.14-2.78l3.34.24zM9.63 18.93l2.77 1.15l-2.53 2.19z"/>
+                                </svg>
+                                <form method="POST" id="theme-form-1" class="theme-form">
+                                    {{ theme_form.hidden_tag() }}  <!-- CSRF token -->
+                                    <label for="theme"></label>
+                                    {{ theme_form.theme() }}  <!-- Render the select field -->
+                                    <button type="submit">Save Changes</button>
+                                </form>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <button id="hamburger-btn">
+                                <span class="hamburger">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+                                </span>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+
+                
+                <ul class="nav-sidebar">
+                    <li class="nav-item">
+                        <a href="#" class="close-menu">
+                        <span class="close-symbol">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                        </span> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/todos">Aufgaben</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/grades">Noten Tracker</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                 
+                    {% endif %}
+                    <li>
+                        <div class="theme-container">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5l1.43 1.43L4.93 20.5L3.5 19.07zm-6.18 2.43L11.41 5L9.97 6l.42-1.7L9 3.24l1.75-.12l.58-1.65L12 3.1l1.73.03l-1.35 1.13zm-3.3 3.61l-1.16-.73l-1.12.78l.34-1.32l-1.09-.83l1.36-.09l.45-1.29l.51 1.27l1.36.03l-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58l2.77-1.15l-.24 3.35zm4.33-2.7l1.15-2.77l2.2 2.54zm1.15-4.96l-1.14-2.78l3.34.24zM9.63 18.93l2.77 1.15l-2.53 2.19z"/>
+                                </svg>
+                                <form method="POST" id="theme-form-2" class="theme-form">
+                                    {{ theme_form.hidden_tag() }}  <!-- CSRF token -->
+                                    <label for="theme"></label>
+                                    {{ theme_form.theme() }}  <!-- Render the select field -->
+                                    <button type="submit">Save Changes</button>
+                                </form>
+                        </div>
+                    </li>
+                </ul>
             </nav>
-            <aside class="sidebar">
-                <div class="sidebar-items">
-                    <div class="logo-container">
-                        <img src="/static/brand_logo.png" alt="Logo" class="logo">
-                        <h2 class="app-name">StudyMate</h2>
-                    </div>
-                    <div class="nav-items">
-                        <a class="nav-item btn btn-primary" href="/">Home</a>
-                        {% if current_user.is_authenticated %}
-                        <a class="nav-item btn btn-primary"" href="/todos">Aufgaben</a>
-                        <a class="nav-item btn btn-primary"" href="/grades">Noten Tracker</a>
-                        <a class="nav-item btn btn-delete" href="/logout">Logout</a>
-                        {% else %}
-                        <a class="nav-item btn btn-primary"" href="/login">Login</a>
-                        <a class="nav-item btn btn-primary"" href="/register">Registrierung</a>
-                        {% endif %}
-                    </div>
+      
+            <aside class="sidebar-nav-wrapper">
+                <div class="sidebar-navigation">
+                    <a class="nav-item btn btn-primary" href="/">Home</a>
+                    {% if current_user.is_authenticated %}
+                    <a class="nav-item btn btn-primary" href="/todos">Aufgaben</a>
+                    <a class="nav-item btn btn-primary" href="/grades">Noten Tracker</a>
+                    {% else %}
+
+                    {% endif %}
                 </div>
             </aside>
             <main class="main">
                 {% block content %}{% endblock %}
             </main>
             <footer class="footer">
-                <div class="theme">
-                    <form id="theme-toggle-form" method="post" action="/toggle_light_mode">
-                        {{ form.hidden_tag() }}
-                        <button type="submit" id="theme-toggle">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5l1.43 1.43L4.93 20.5L3.5 19.07zm-6.18 2.43L11.41 5L9.97 6l.42-1.7L9 3.24l1.75-.12l.58-1.65L12 3.1l1.73.03l-1.35 1.13zm-3.3 3.61l-1.16-.73l-1.12.78l.34-1.32l-1.09-.83l1.36-.09l.45-1.29l.51 1.27l1.36.03l-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58l2.77-1.15l-.24 3.35zm4.33-2.7l1.15-2.77l2.2 2.54zm1.15-4.96l-1.14-2.78l3.34.24zM9.63 18.93l2.77 1.15l-2.53 2.19z"/>
-                            </svg>
-                        </button>
-                    </form>
-                </div>
-                <div class="copyright"> ©2024 StudyMate by Mirixy </div>
+                <div class="copyright"> © 2024 StudyMate by Mirixy </div>
                 <div class="social-container">
-                    <a class="Socials" href="https://github.com/mirixy">
-                        <span class="social"></span>
-                        <p>GitHub</p>
+                    <a class="Socials" href="https://github.com/mirixy/studymate/" target="_blank">
+                        <span class="social">
+                        </span>
+                        <p>GitHub-Repo</p>
                     </a>
                 </div>
             </footer>
         </div>
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </div>
+        <script src="{{ url_for('static', filename='script.js') }}">
+        </script>
     </body>
 </html>

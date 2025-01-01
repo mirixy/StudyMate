@@ -3,21 +3,21 @@
 <div class="add_form_container">
     <div class="add_todo_form">
 <form method="POST">
-    {{ form.hidden_tag() }}
+    {{ todo_form.hidden_tag() }}
     <div class="form-group">
-        {{ form.title.label }}<br>
-        {{ form.title(class="form-control") }}
+        {{ todo_form.title.label }}<br>
+        {{ todo_form.title(class="form-control") }}
     </div>
     <div class="form-group mt-2">
-        {{ form.description.label }}<br>
-        {{ form.description(class="form-control") }}
+        {{ todo_form.description.label }}<br>
+        {{ todo_form.description(class="form-control") }}
     </div>
     <div class="form-group mt-2">
-        {{ form.deadline.label }}<br>
-        {{ form.deadline(class="form-control", type="date") }}  <!-- Use type="date" for date picker -->
+        {{ todo_form.deadline.label }}<br>
+        {{ todo_form.deadline(class="form-control", type="date") }}  <!-- Use type="date" for date picker -->
     </div>
     <div class="form-group mt-3">
-        {{ form.submit(class="btn btn-primary custom-btn") }}
+        {{ todo_form.submit(class="btn btn-primary custom-btn") }}
     </div>
 </form>
     </div>

@@ -41,7 +41,7 @@
         --button-hover-clr: #19763a;
 
         /* Layout Color */
-        --sidebar-clr: #6ba26b;
+        --sidebar-clr: #e0f7e0;
         --nav-footer-clr: #96d396;
         --content-clr: #d1dbd1;
 
@@ -55,7 +55,7 @@ html {
     color-scheme: dark light;
 }
 
-:root[data-theme="light"] {
+:root:has(#theme [value="light"]:checked) {
     color-scheme: light;
     --background: #cfcfcf; 
     --primary-text: #333333;
@@ -67,17 +67,15 @@ html {
     --button-hover-clr: #19763a;
 
     /* Layout Color */
-    --sidebar-clr: #cfcfcf;
+    --sidebar-clr: #e0f7e0;
     --nav-footer-clr: #96d396;
-    --content-clr: #bdbdbd;
+    --content-clr: #d1dbd1;
 
     --svg: url("/static/github-mark.svg");
 
-    --nav-sidebar-clr: hsl(0 0 100% / 0.3);
-
 }
 
-:root[data-theme="dark"]{
+:root:has(#theme [value="dark"]:checked) {
     color-scheme: dark;
     --background: #1e1926; /* Dark background */
     --primary-text: #cfcfcf; /* Primary text color */
@@ -94,8 +92,6 @@ html {
     --content-clr: #5b5368;
 
     --svg: url("/static/github-mark-white.svg");
-    
-    --nav-sidebar-clr: hsl(0 0 0% / 0.5);
 
 }
 
@@ -109,18 +105,12 @@ html {
 
 
 body {
-    width: 100svw;
-    height:100vh;
-    height:100svh;
+    width: 100%;
+    height: 100vh;
     background-color: var(--background);
     
    
 }
-
-svg path {
-  fill: var(--primary-text);
-}
-
 
 .wrapper {
     display: grid;
@@ -130,8 +120,6 @@ svg path {
     "navbar"
     "main"
     "footer";
-    width: 100vw;
-    width: 100svw;
     min-height: 100vh;
     min-height: 100svh;
 }
@@ -144,7 +132,6 @@ svg path {
 
 
 nav {
-    width: 100vw;
     grid-area: navbar;
     background-color: var(--nav-footer-clr);
    
@@ -178,12 +165,7 @@ nav a {
     align-items: center;
     justify-content: center;
     columns: var(--secondary-text);
-    color: var(--primary-text);
         
-}
-
-nav a:hover {
-  background-color: var(--button-hover-clr);
 }
 
 
@@ -200,20 +182,23 @@ nav a:hover {
     align-items: flex-start;
     justify-content: flex-start;
     background-color: var(--nav-sidebar-clr);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
     
 }
 
+.sideblur {
+    filter: blur(5px);
+}
+
 img {
-    width: 3em;
-    height: 3em;
+    width: 4em;
+    height: 4em;
 }
 
 .logo-container {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 .theme-container {
@@ -226,8 +211,8 @@ img {
 .main { 
     grid-area: main; 
     background-color: var(--content-clr);
+    padding: 2em;
     overflow-y: auto;
-    place-content: center;
        
 }
 
@@ -267,203 +252,23 @@ img {
     background-position: center; /* Center the image */
 }
 
-.background {
-    position: fixed;
-    width: 100svw;
-    height: 100svh;
-    background-image: url("/static/background.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: 50%;
-    filter: blur(5px);
-}
 
-
-.login-wrapper {
-    display: flex;
-    place-items: center;
-    height: 100vh;
-    margin-inline: auto;
-    place-content: center;
-    
-    
-}
-
-.login-card {
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, var(--button-clr) 50%, var(--second-clr) 50%);
-  border-radius: 15px;
-  width: 90svw;
-  height: 300px;
-  place-content: center;
-  place-items: center;
-  gap: 1em;
-  z-index: 9999;
-  
-}
-
-.login-card input {
-    width: 100%;
-    height: 2em;
-    background-color: var(--background);
-    color: var(--primary-text);
-}
-
-.login-card button {
-    width: 100%;
-    height: 2em;
-    margin-top: 2em;
-    background-color: var(--button-clr);
-    color: var(--primary-text);
-}
-
-.login-card button:hover {
-    background-color: var(--button-hover-clr);
-}
-
-#add-todo-container {
-    place-items: center;
-    width: 100%;
-}
-
-.card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 500px));
-    grid-template-rows: auto auto;
-    width: 100%;
-    height: 400px;
-    gap: 1em;
-    margin-top: 2em;
-    justify-content: center;
-
-}
-.todo-wrapper {
-    height: 100%;
-    margin: 1em;
-}
-
-
-.todo-card {
-    display: grid;
-    grid-template-rows: subgrid;
-    grid-row: span 7;
-    width: minmax(300px, 500px);
-    height: 100%;
-    background-color: var(--sidebar-clr);
-    border-radius: 15px;
-    
-}
-
-
-.modal {
-  width: 500px;
-  height: 500px;
-  background: rgba(0, 0, 0, 0.706);
-  justify-self: center;
-  align-self: center;
-  place-items: center;
-  place-content: center;
-  
-}
-
-.modal::backdrop {
-    background-color: rgba(0, 0, 0, 0.237);
-    backdrop-filter: blur(5px);
-}
-.modal-content {
-  display:flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  color: var(--background);
-  justify-content: center;
-  align-items: center;
-}
-
-.form-control {
-  width: 400px;
-  font-size: 2rem;
-}
-
-.form-control#description {
-    height:6em;
-}
-
-.mt-3 input {
-    width: 400px;
-    margin: 2rem 0 0 0;
-}
-
-.close-btn {
-    margin-left: 400px;
-    font-size: 2rem;
-    border-style: none;
-    background-color: transparent;
-}
-
-.close-btn:hover {
-    color: var(--button-hover-clr);
-}
-
-.btn {
-    display: flex;
-    width: 80%;
-    height: 3em;
-    place-content: center;
-    place-items: center;
-   }
-
-
-.btn-primary {
-    background-color: var(--button-clr);
-    color: var(--primary-text);
-}
-
-.btn-delete {
-background-color: var(--alert-color);
-}
-
-.btn-primary:hover {
-    background-color: var(--button-hover-clr);
-}
-
-.btn-delete:hover {
-    background-color: rgba(100% 70% 30% / 0.7);
-}
-
-.big-btn {
-    width: 15em;
-    border-radius: 15px;
-    height: 3em;
-}
-
-@media (max-width: 999px ) {
+@media (max-width: 1071px ) {
     .hide-mobile-view {
         display: none;
     }
 
-  .sidebar-nav-wrapper {
+  .sidebar-navigation {
     display: none;
-    }
-
-    .login-wrapper{
-        width: min(90svw, 500px);
-    }
-
- 
-
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1072px) {
     #hamburger-btn {
         display: none;
     }
-
-    .login-wrapper {
-        width: 500px;
-    }
     
+
+
     .wrapper {
         grid-template-columns: 300px 1fr;
         grid-template-areas: "navbar navbar" "side main" "footer footer";
@@ -488,7 +293,33 @@ background-color: var(--alert-color);
         padding: 2rem;
    }
 
+   .btn {
+    display: flex;
+    width: 80%;
+    height: 3em;
+    place-content: center;
+    place-items: center;
+   }
 
+   .btn-primary {
+        background-color: var(--button-clr);
+        color: var(--primary-text);
+   }
+
+   .btn-delete {
+    background-color: var(--alert-color);
+   }
+
+   .btn-primary:hover {
+        background-color: var(--button-hover-clr);
+   }
+
+   .btn-delete:hover {
+        background-color: rgba(100% 70% 30% / 0.7);
+   }
+
+
+    
 }
 
 
