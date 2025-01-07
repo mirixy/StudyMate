@@ -19,11 +19,7 @@ function deleteSubject(subjectId, subjectName) {
 }
 
 
-function showGradeForm(subject) {
-    document.getElementById('selected-subject').innerText = subject;
-    document.getElementById('subject-input').value = subject;
-    document.getElementById('grade-modal').style.display = 'block';
-}
+
 
 const menudialog = document.querySelector(".nav-sidebar");
 const openmenu = document.querySelector("#hamburger-btn");
@@ -76,17 +72,21 @@ document.querySelectorAll('.theme-form').forEach(form => {
 
 
 
-const newtodo = document.querySelector("#add-todo-btn");
-const newtododialog = document.querySelector("#add-todo");
-const closenewtodo = document.querySelector("#close-dialog");
+document.addEventListener("DOMContentLoaded", function() {
+    const newtodo = document.querySelector("#add-todo-btn");
+    const newtododialog = document.querySelector("#add-todo");
+    const closenewtodo = document.querySelector("#close-dialog");
 
-newtodo.addEventListener("click", () => {
-    newtododialog.showModal();
-})
+    if (newtodo && newtododialog && closenewtodo) {
+        newtodo.addEventListener("click", () => {
+            newtododialog.showModal();
+        });
 
-closenewtodo.addEventListener("click", () => {
-    newtododialog.close();
-})
+        closenewtodo.addEventListener("click", () => {
+            newtododialog.close();
+        });
+    }
+});
 
 function openEditModal(taskId) {
     // Find the dialog element
@@ -106,3 +106,71 @@ function openEditModal(taskId) {
     // Show the modal
     modal.showModal();
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const openCourses = document.getElementById("showCourses");
+    const courseDialog = document.getElementById("dropdown-menu-grades");
+    const closeCourseDialog = document.getElementById("close-mobile-grades");
+
+    if (openCourses && courseDialog && closeCourseDialog) {
+        openCourses.addEventListener("click", () => {
+            courseDialog.showModal();
+        });
+    
+        closeCourseDialog.addEventListener("click", () => {
+            courseDialog.close();
+        });
+    }
+
+    
+    const gradeDialog = document.getElementById("grade-modal");
+    const closeGradeDialog = document.getElementById("close-grades");
+
+    if (gradeDialog && closeGradeDialog) {
+        document.querySelectorAll(".subject-button").forEach(button => {
+            button.addEventListener("click", () => {
+                const subject = button.innerText; // Get the subject from the button text
+                document.getElementById('selected-subject').innerText = subject;
+                document.getElementById('subject-input').value = subject;
+                gradeDialog.showModal();
+            });
+        });
+        
+        if (closeGradeDialog) {
+            closeGradeDialog.addEventListener("click", () => {
+                gradeDialog.close();
+            });
+        }
+    }
+
+    const addCourse = document.querySelector("#openSubjectModal");
+    const addDialog = document.querySelector("#subject-modal");
+    const closeAdd = document.querySelector("#close-subject");
+
+    if (addCourse && addDialog && closeAdd) {
+        addCourse.addEventListener("click", () => {
+            addDialog.showModal();
+        });
+    
+        closeAdd.addEventListener("click", () => {
+            addDialog.close();
+        });
+    }
+
+    const deleteSubject = document.querySelector("#openDeleteModal");
+    const deleteDialog = document.querySelector("#delete-subject-modal");
+    const closeDelete = document.querySelector("#close-delete");
+
+    if (deleteSubject && deleteDialog && closeDelete) {
+        deleteSubject.addEventListener("click", () => {
+            deleteDialog.showModal();
+        });
+    
+        closeDelete.addEventListener("click", () => {
+            deleteDialog.close();
+        });
+    }
+
+
+    
+});

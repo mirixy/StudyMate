@@ -2,6 +2,8 @@
 :root {
      --alert-color: rgb(192, 84, 84); /* Light red alert color */
      --second-clr: #1e112f;
+
+     
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,6 +26,8 @@
         --nav-sidebar-clr: hsl(0 0% 0% / 0.8);
 
         --svg: url("/static/github-mark-white.svg");
+
+        --glow: hsl(from var(--button-clr) 282 s 75)
 
         
     }
@@ -48,6 +52,8 @@
         --nav-sidebar-clr: hsl(0 0% 100% / 0.8);
 
         --svg: url("/static/github-mark.svg");
+
+        --glow: hsl(110 51.5% 68%);
     }
 }
 
@@ -75,6 +81,8 @@ html {
 
     --nav-sidebar-clr: hsl(0 0 100% / 0.3);
 
+    --glow: hsl(110 51.5% 68%);
+
 }
 
 :root[data-theme="dark"]{
@@ -96,6 +104,9 @@ html {
     --svg: url("/static/github-mark-white.svg");
     
     --nav-sidebar-clr: hsl(0 0 0% / 0.5);
+
+    --glow: hsl(from var(--button-clr) 282 s 75)
+
 
 }
 
@@ -147,6 +158,7 @@ nav {
     width: 100vw;
     grid-area: navbar;
     background-color: var(--nav-footer-clr);
+    
    
 }
 
@@ -179,6 +191,7 @@ nav a {
     justify-content: center;
     columns: var(--secondary-text);
     color: var(--primary-text);
+    
         
 }
 
@@ -228,7 +241,6 @@ img {
     background-color: var(--content-clr);
     overflow-y: auto;
     place-content: center;
-       
 }
 
 .footer {
@@ -300,6 +312,7 @@ img {
   place-items: center;
   gap: 1em;
   z-index: 9999;
+  box-shadow: 0 5px 5px black;
   
 }
 
@@ -352,19 +365,29 @@ img {
     height: 100%;
     background-color: var(--sidebar-clr);
     border-radius: 15px;
+    padding: 2em;
+    box-shadow: 0 5px 5px black;
     
 }
 
 
 .modal {
   width: 500px;
-  height: 500px;
+  height: 600px;
   background: rgba(0, 0, 0, 0.706);
   justify-self: center;
   align-self: center;
   place-items: center;
   place-content: center;
   
+  
+}
+
+.simple-card {
+    background-color: hsl(from var(--nav-footer-clr) h 40 70);
+    border-radius: 15px;
+    box-shadow: 0 5px 5px black;
+    padding: 1em;
 }
 
 .modal::backdrop {
@@ -376,18 +399,30 @@ img {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  color: var(--background);
+  color: var(--primary-text);
   justify-content: center;
   align-items: center;
+  gap: 1em;
+  
+}
+
+.modal-content label {
+    font-size: 1.3rem;
 }
 
 .form-control {
   width: 400px;
   font-size: 2rem;
+
 }
 
 .form-control#description {
     height:6em;
+}
+
+.mt-3 button {
+    width: 400px;
+    margin: 2rem 0 0 0;
 }
 
 .mt-3 input {
@@ -426,10 +461,12 @@ background-color: var(--alert-color);
 
 .btn-primary:hover {
     background-color: var(--button-hover-clr);
+    box-shadow: -5px -5px 15px 6px var(--glow);
 }
 
 .btn-delete:hover {
     background-color: rgba(100% 70% 30% / 0.7);
+    
 }
 
 .big-btn {
@@ -437,6 +474,62 @@ background-color: var(--alert-color);
     border-radius: 15px;
     height: 3em;
 }
+
+.grid {
+    display: grid;
+    max-width: calc(1000px + 1em);
+    gap: 1em;
+    margin-top: 1em;
+
+}
+
+.grade-container {
+    margin-inline:2em;
+
+    .grade-button-container {
+        display: flex;
+        
+        margin-top: 1em;
+        margin-bottom: 1em;
+        gap: 1em;
+
+        button {
+            width: 150px;
+            border-radius: 15px;
+            
+        }
+        
+    }
+}
+
+.overview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 500px));
+    gap:1em;
+    margin-top: 2em;
+
+    .overview ul {
+        list-style: none;
+    }
+}
+
+.greeter {
+    max-width: 100%;
+    height: 100%;
+    margin: 2em;
+
+    blockquote {
+        margin-top: 2em;
+    }
+}
+
+
+
+.subject-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 500px));
+}
+
 
 @media (max-width: 999px ) {
     .hide-mobile-view {

@@ -6,7 +6,7 @@ class ToDoForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(max=100)])
     description = TextAreaField('Description', validators=[Length(max=500)])
     deadline = DateField('Deadline', format='%Y-%m-%d', validators=[DataRequired()])
-    submit = SubmitField('Save')
+    submit = SubmitField('Speichern')
 
 
 class GradeForm(FlaskForm):
@@ -20,7 +20,7 @@ class GradeForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=150)])
     password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Register')
+    submit = SubmitField('Registrieren')
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
