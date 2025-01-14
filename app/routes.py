@@ -14,12 +14,15 @@ from datetime import datetime, timedelta
 
 @main.context_processor
 def inject_theme():
-    current_theme = current_user.get_theme() or 'system'
-    theme_form = ThemeForm(theme=current_theme)
-    return {
-        'current_theme': current_theme,
-        'theme_form': theme_form
-    }
+    try:
+        current_theme = current_user.get_theme() or 'system'
+        theme_form = ThemeForm(theme=current_theme)
+        return {
+            'current_theme': current_theme,
+            'theme_form': theme_form
+        }
+    except AttributeError:
+        return {'current_theme': 'system', 'theme_form': ThemeForm(theme='system')}
 
 @main.route("/", methods=['GET', 'POST'])
 @login_required
@@ -268,6 +271,7 @@ def update_theme():
     db.session.commit()
     
     return jsonify({'success': True})
+
 
 
 
